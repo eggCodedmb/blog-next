@@ -1,12 +1,18 @@
 "use client";
 import Editor from "@/components/tiptap/Editor";
 import * as Form from "@radix-ui/react-form";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { CreatePostParams } from "@/lib/post/post.action";
+import { clear } from "@/lib/utils";
+import ConfirmDialog from "@/components/feedback/ConfirmDialog";
+import ToastNotice from "@/components/feedback/ToastNotice";
+import { useRouter } from "next/navigation";
 function FormPost({
   onSubmit,
 }: {
-  onSubmit: (post: CreatePostParams) => void;
+  onSubmit: (
+    post: CreatePostParams,
+  ) => Promise<{ success: boolean; message?: string }>;
 }) {
   const [post, setPost] = useState({
     published: false,
@@ -15,15 +21,54 @@ function FormPost({
     cover: "",
     authorId: 0,
   });
+  const router = useRouter();
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<"success" | "error">(
+    "success",
+  );
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     console.log(post, "提交");
 
     e.preventDefault();
-    if (post.content.trim() === "<p></p>" || post.content.trim() === "") {
+    if (post.content.trim() === "") {
+      setToastVariant("error");
+      setToastMessage("内容不能为空");
+      setToastOpen(true);
       return;
     }
-    onSubmit(post);
+    setOpenConfirm(true);
+  };
+
+  const confirmSubmit = () => {
+    setOpenConfirm(false);
+    startTransition(async () => {
+      try {
+        const res = await onSubmit(post);
+        if (res?.success) {
+          setToastVariant("success");
+          setToastMessage(res.message || "提交成功");
+          setToastOpen(true);
+          clear("content");
+          window.setTimeout(() => {
+            router.replace("/");
+            router.refresh();
+            // window.location.href = "/";
+          }, 300);
+        } else {
+          setToastVariant("error");
+          setToastMessage(res?.message || "提交失败");
+          setToastOpen(true);
+        }
+      } catch (error) {
+        setToastVariant("error");
+        setToastMessage("提交失败");
+        setToastOpen(true);
+      }
+    });
   };
   // 校验
   return (
@@ -85,6 +130,20 @@ function FormPost({
           </div>
         </Form.Submit>
       </Form.Root>
+      <ConfirmDialog
+        open={openConfirm}
+        title="确认提交"
+        description="发布后将对外可见，确定提交吗？"
+        onConfirm={confirmSubmit}
+        onCancel={() => setOpenConfirm(false)}
+        loading={isPending}
+      />
+      <ToastNotice
+        open={toastOpen}
+        message={toastMessage}
+        variant={toastVariant}
+        onClose={() => setToastOpen(false)}
+      />
     </div>
   );
 }

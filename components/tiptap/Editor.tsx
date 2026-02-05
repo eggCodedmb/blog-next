@@ -8,8 +8,8 @@ import TableOfContents from "@tiptap/extension-table-of-contents";
 import MenuBar from "./MenuBar";
 import { Editor } from "@tiptap/core";
 import { Markdown } from "@tiptap/markdown";
-// import { generateHTML } from "@tiptap/html";
 import { save, load } from "@/lib/utils";
+import LoadingSpinner from "@/components/feedback/LoadingSpinner";
 import "@/app/style.css";
 
 const extensions = [
@@ -32,30 +32,35 @@ function TiptapEditor({ content, onChange, cache = false }: TiptapEditorProps) {
     extensions: [...extensions],
     content: cachedContent || content || "",
     immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class:
+          "tiptap focus:outline-none min-h-40 p-6 text-theme leading-relaxed",
+      },
+    },
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      onChange(html);
+      if (cache) {
+        save("content", html);
+      }
+    },
   }) as Editor;
 
-  editor?.on("update", ({ editor }) => {
-    onChange(editor.getHTML());
-    // 缓存内容
-    if (cache) {
-      save("content", editor.getHTML());
-    }
-  });
-
   return (
-    <div>
+    <div className="editor-shell">
       <Tiptap instance={editor}>
         {/* 菜单栏 */}
         <MenuBar />
         {/* 编辑内容区域 */}
-        <div className="main overflow-auto">
+        <div className="editor-content">
           <Tiptap.Content className="w-full max-h-120" />
         </div>
         {/* 目录 */}
         {/* 加载中状态 */}
         <Tiptap.Loading>
-          <div className="w-full h-120 rounded-md absolute top-0 left-0 flex items-center justify-center bg-slate-100">
-            加载中...
+          <div className="editor-loading">
+            <LoadingSpinner />
           </div>
         </Tiptap.Loading>
       </Tiptap>

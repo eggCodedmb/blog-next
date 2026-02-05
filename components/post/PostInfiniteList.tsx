@@ -20,12 +20,6 @@ export default function PostInfiniteList({
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setPosts(initialPosts);
-    setPage(1);
-    setHasMore(initialPosts.length >= pageSize);
-  }, [initialPosts, pageSize]);
-
-  useEffect(() => {
     if (!hasMore || isLoading) return;
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
@@ -63,14 +57,14 @@ export default function PostInfiniteList({
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasMore, isLoading, page, pageSize]);
+  }, [hasMore, isLoading, page, pageSize, rootRef]);
 
   if (!posts.length) {
     return <div className="text-center py-20 text-muted">暂无文章 ✍️</div>;
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {posts.map((post) => (
         <PostCard key={`${post.id}-${post.createdAt}`} post={post} />
       ))}
