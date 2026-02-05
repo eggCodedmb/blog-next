@@ -1,7 +1,6 @@
 import { getPostAll } from "@/lib/post/post.action";
-import PostList from "@/components/post/PostList";
 import Link from "next/link";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
+import PostInfiniteSection from "@/components/post/PostInfiniteSection";
 const BlogHome = async () => {
   const posts = await getPostAll({
     page:1,
@@ -21,16 +20,7 @@ const BlogHome = async () => {
           </div>
         </Link>
       </div>
-      <div className="h-[calc(100vh-170px)]">
-        <ScrollArea.Root className="h-full w-full overflow-hidden">
-          <ScrollArea.Viewport className="h-full w-full p-2">
-            <PostList posts={posts} />
-          </ScrollArea.Viewport>
-          <ScrollArea.Scrollbar orientation="vertical" className="w-2">
-            <ScrollArea.Thumb className="bg-slate-400/60 dark:bg-slate-500/60 rounded-full" />
-          </ScrollArea.Scrollbar>
-        </ScrollArea.Root>
-      </div>
+      <PostInfiniteSection initialPosts={posts} pageSize={10} />
     </section>
   );
 };

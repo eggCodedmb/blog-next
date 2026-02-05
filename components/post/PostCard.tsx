@@ -69,7 +69,11 @@ export default function PostCard({ post }: { post: PostItemProps }) {
               className="rounded-full"
             />
             <span>{post._count?.comments || 0}</span>
-            <span>{post.createdAt?.toLocaleDateString() || ""}</span>
+            <span>
+              {post.createdAt
+                ? new Date(post.createdAt).toLocaleDateString()
+                : ""}
+            </span>
           </div>
         </div>
       </Link>

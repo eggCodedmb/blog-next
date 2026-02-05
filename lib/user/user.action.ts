@@ -47,5 +47,5 @@ export async function logout() {
     httpOnly: true,
     expires: new Date(0),
   });
-  return { message: "退出登录成功" };
+  return { success: true };
 }

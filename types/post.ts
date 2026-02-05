@@ -3,7 +3,7 @@ export interface PostItemProps {
   title: string;
   content: string | null;
   cover: string;
-  createdAt: Date;
+  createdAt: Date | string;
   author: {
     id: number;
     name: string | null;
