@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AuthMenu from "@/components/auth/AuthMenu";
 import ThemeToggle from "@/components/theme/ThemeButton";
+
 function Header() {
   return (
     <header className="w-full h-16 bg-surface border-b border-theme flex justify-between">
@@ -15,15 +16,15 @@ function Header() {
         </div>
         <Link href="/" className="flex items-center">
           <Image src="/logo.svg" alt="logo" width={28} height={28} />
-          <p className="text-lg font-semibold text-theme font-display pl-3 max-sm:hidden">
-            Threads
-          </p>
+          {/* <p className="text-lg font-semibold text-theme font-display pl-3 max-sm:hidden">
+            
+          </p> */}
         </Link>
       </div>
       <nav className="w-full h-full flex-1 max-sm:hidden">
         <NavTab />
       </nav>
-      <div>
+      <div className="flex items-center m-5">
         <ThemeToggle />
       </div>
       <div className="flex items-center m-5">

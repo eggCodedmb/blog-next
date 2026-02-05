@@ -9,8 +9,8 @@ const BlogHome = async () => {
   });
   return (
     <section className="w-3xl">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-6 text-theme font-display">
+      <div className="flex justify-between items-center mt-5">
+        <h1 className="text-3xl font-bold text-theme font-display mb-0">
           最新文章
         </h1>
         <Link href="/createPost">
