@@ -27,3 +27,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Post = Prisma.PostModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel
+/**
+ * Model Favorite
+ * 
+ */
+export type Favorite = Prisma.FavoriteModel

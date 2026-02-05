@@ -1,7 +1,23 @@
 import { PostItemProps } from "@/types/post";
 import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
-function Content({ post }: { post: PostItemProps }) {
+import CommentSection, { CommentItem } from "@/components/comment/CommentSection";
+
+function Content({
+  post,
+  currentUserId,
+  comments,
+  commentCount,
+  favoriteCount,
+  favorited,
+}: {
+  post: PostItemProps;
+  currentUserId: number | null;
+  comments: CommentItem[];
+  commentCount: number;
+  favoriteCount: number;
+  favorited: boolean;
+}) {
   return (
     <div className="w-3xl bg-card border border-theme p-6 rounded-md card-glow">
       <h1 className="text-3xl font-bold mb-8 text-theme font-display">
@@ -30,6 +46,14 @@ function Content({ post }: { post: PostItemProps }) {
         dangerouslySetInnerHTML={{ __html: post.content as string }}
         suppressHydrationWarning={true}
       ></div>
+      <CommentSection
+        postId={post.id}
+        currentUserId={currentUserId}
+        initialComments={comments}
+        initialCommentCount={commentCount}
+        initialFavoriteCount={favoriteCount}
+        initialFavorited={favorited}
+      />
     </div>
   );
 }

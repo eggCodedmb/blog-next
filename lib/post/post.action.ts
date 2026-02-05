@@ -31,6 +31,12 @@ export async function getPostAll(data: PageParams) {
           avatar: true,
         },
       },
+      _count: {
+        select: {
+          comments: true,
+          favorites: true,
+        },
+      },
     },
   });
   return posts;
@@ -51,6 +57,52 @@ export async function getPostById(id: number) {
     },
   });
   return post[0];
+}
+
+export async function getPostDetail(id: number, viewerId?: number) {
+  const include: Record<string, unknown> = {
+    author: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+      },
+    },
+    comments: {
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
+      },
+    },
+    _count: {
+      select: {
+        comments: true,
+        favorites: true,
+      },
+    },
+  };
+
+  if (viewerId) {
+    include.favorites = {
+      where: { userId: viewerId },
+      select: { id: true },
+    };
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id },
+    include,
+  });
+
+  return post;
 }
 
 // 删除文章

@@ -52,7 +52,7 @@ export default function PostCard({ post }: { post: PostItemProps }) {
             </span>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <Image
               src="/assets/like.svg"
               alt={post.author.name || post.author.email}
@@ -60,6 +60,7 @@ export default function PostCard({ post }: { post: PostItemProps }) {
               height={24}
               className="rounded-full"
             />
+            <span>{post._count?.favorites || 0}</span>
             <Image
               src="/assets/reply.svg"
               alt={post.author.name || post.author.email}
@@ -67,6 +68,7 @@ export default function PostCard({ post }: { post: PostItemProps }) {
               height={24}
               className="rounded-full"
             />
+            <span>{post._count?.comments || 0}</span>
             <span>{post.createdAt?.toLocaleDateString() || ""}</span>
           </div>
         </div>

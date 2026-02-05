@@ -1,6 +1,7 @@
 import Content from "./centent";
-import { getPostById } from "@/lib/post/post.action";
+import { getPostDetail } from "@/lib/post/post.action";
 import { notFound } from "next/navigation";
+import { getUser } from "@/lib/user/user.action";
 
 
 interface ContentPageProps {
@@ -17,7 +18,8 @@ export default async function ContentPage({ params }: ContentPageProps) {
   }
 
   // 3. 直接使用await获取数据（无需use钩子）
-  const post = await getPostById(Number(id));
+  const user = await getUser();
+  const post = await getPostDetail(Number(id), user?.id);
 
   // 4. 数据验证
   if (!post) {
@@ -27,7 +29,14 @@ export default async function ContentPage({ params }: ContentPageProps) {
   // 5. 将解析后的数据传递给子组件
   return (
     <div>
-      <Content post={post} />
+      <Content
+        post={post}
+        currentUserId={user?.id || null}
+        comments={post.comments || []}
+        commentCount={post._count?.comments || 0}
+        favoriteCount={post._count?.favorites || 0}
+        favorited={(post.favorites?.length || 0) > 0}
+      />
     </div>
   );
 }
