@@ -81,11 +81,11 @@ function UserEdit({ id, email, name, avatar }: UserEditProps) {
               </Form.Field>
               <Form.Submit asChild>
                   <button
-                    className="bg-primary text-white px-4 py-2 rounded-md transition hover:opacity-90"
+                    className="btn btn-primary hover:opacity-90"
                     type="submit"
                   >
-                  {isPending ? "保存中..." : "保存修改"}
-                </button>
+                    {isPending ? "保存中..." : "保存修改"}
+                  </button>
               </Form.Submit>
             </Form.Root>
           </div>

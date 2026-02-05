@@ -131,7 +131,7 @@ export default function Auth({
 
                       <button
                         type="submit"
-                        className="w-full mt-2 bg-linear-to-r from-purple-500 to-cyan-500 py-2.5 rounded-xl font-semibold hover:scale-[1.02] transition"
+                        className="btn w-full mt-2 rounded-xl bg-linear-to-r from-purple-500 to-cyan-500 py-2.5 hover:scale-[1.02]"
                       >
                         登录
                       </button>
@@ -274,7 +274,7 @@ export default function Auth({
 
                       <button
                         type="submit"
-                        className="w-full mt-2 bg-linear-to-r from-cyan-500 to-purple-500 py-2.5 rounded-xl font-semibold hover:scale-[1.02] transition"
+                        className="btn w-full mt-2 rounded-xl bg-linear-to-r from-cyan-500 to-purple-500 py-2.5 hover:scale-[1.02]"
                       >
                         注册提交
                       </button>

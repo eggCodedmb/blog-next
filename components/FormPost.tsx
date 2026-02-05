@@ -77,7 +77,7 @@ function FormPost({
         <Form.Submit asChild>
           <div className="flex justify-center pb-1">
             <button
-              className="mt-2.5 inline-flex h-9 w-30 items-center justify-center rounded bg-primary px-5 font-medium leading-none text-white shadow-sm transition hover:opacity-90 focus:outline-none"
+              className="btn btn-primary mt-2.5 h-9 w-30 shadow-sm hover:opacity-90"
               type="submit"
             >
               发布

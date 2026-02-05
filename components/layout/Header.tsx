@@ -9,7 +9,7 @@ function Header() {
     <header className="w-full h-16 bg-surface border-b border-theme flex justify-between">
       <div className="flex items-center m-5">
         <div className="mr-2 hover:cursor-pointer hidden max-sm:block">
-          <button className="w-8 h-8 flex items-center justify-center">
+          <button className="btn btn-ghost btn-icon">
             <Image src="/assets/菜单.svg" alt="menu" width={24} height={24} />
           </button>
         </div>

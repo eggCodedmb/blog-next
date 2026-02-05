@@ -15,7 +15,7 @@ const BlogHome = async () => {
         </h1>
         <Link href="/createPost">
           <div>
-            <button className="w-30 bg-primary text-white px-4 py-2 rounded-md transition hover:opacity-90">
+            <button className="btn btn-primary w-30 hover:opacity-90">
               创建文章
             </button>
           </div>
