@@ -3,6 +3,7 @@
 import { prisma } from "../prisma";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import bcrypt from "bcrypt";
 export async function userById(id: number, email?: string) {
   const where = email ? { id, email } : { id };
   const user = await prisma.user.findUnique({ where });
@@ -17,9 +18,34 @@ export async function userList() {
 
 export async function updateUser(
   id: number,
-  data: { name?: string; avatar?: string },
+  data: {
+    name?: string;
+    avatar?: string;
+    currentPassword?: string;
+    newPassword?: string;
+    confirmPassword?: string;
+  },
 ) {
-  const user = await prisma.user.update({ where: { id }, data });
+  const { currentPassword, newPassword, confirmPassword, ...profile } = data;
+  const updates: { name?: string; avatar?: string; password?: string } = {
+    ...profile,
+  };
+
+  if (currentPassword || newPassword || confirmPassword) {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      throw new Error("请完整填写密码信息");
+    }
+    if (newPassword !== confirmPassword) {
+      throw new Error("两次密码不一致");
+    }
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) throw new Error("用户不存在");
+    const valid = await bcrypt.compare(currentPassword, user.password);
+    if (!valid) throw new Error("当前密码不正确");
+    updates.password = await bcrypt.hash(newPassword, 10);
+  }
+
+  const user = await prisma.user.update({ where: { id }, data: updates });
   return user;
 }
 

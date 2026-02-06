@@ -16,6 +16,7 @@ function EditProfilePage() {
       email={user.email}
       name={user.name}
       avatar={user.avatar}
+      isAdmin={user.isAdmin}
     />
   );
 }

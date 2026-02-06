@@ -1,4 +1,4 @@
-import Content from "./centent";
+import Content from "@/components/post/centent";
 import { getPostDetail } from "@/lib/post/post.action";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/user/user.action";
