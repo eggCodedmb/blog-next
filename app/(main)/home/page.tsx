@@ -12,7 +12,7 @@ const BlogHome = async () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-theme font-display mb-0">
           最新文章
         </h1>
-        <Link href="/createPost">
+        <Link href="/create-post">
           <div>
             <button className="btn btn-primary w-full sm:w-30 hover:opacity-90">
               创建文章

@@ -4,7 +4,11 @@ import { use } from "react";
 function EditProfilePage() {
   const user = use(getUser());
   if (!user) {
-    return null;
+    return (
+      <div className="w-full max-w-4xl px-4 py-16 text-center text-muted">
+        请先登录后查看
+      </div>
+    );
   }
   return (
     <UserEdit

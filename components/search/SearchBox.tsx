@@ -22,6 +22,10 @@ function formatDate(value: string | null) {
   return date.toLocaleDateString();
 }
 
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function SearchBox() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>(EMPTY_RESULTS);
@@ -30,6 +34,28 @@ function SearchBox() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const trimmedQuery = useMemo(() => query.trim(), [query]);
+  const highlightRegExp = useMemo(() => {
+    if (!trimmedQuery) return null;
+    const terms = trimmedQuery.split(/\s+/).filter(Boolean);
+    if (terms.length === 0) return null;
+    const pattern = terms.map(escapeRegExp).join("|");
+    return new RegExp(`(${pattern})`, "gi");
+  }, [trimmedQuery]);
+
+  const renderHighlight = (text: string) => {
+    if (!highlightRegExp || !text) return text;
+    const parts = text.split(highlightRegExp);
+    return parts.map((part, index) => {
+      if (highlightRegExp.test(part)) {
+        return (
+          <span key={`${part}-${index}`} className="text-primary">
+            {part}
+          </span>
+        );
+      }
+      return <span key={`${part}-${index}`}>{part}</span>;
+    });
+  };
 
   useEffect(() => {
     if (!trimmedQuery) {
@@ -111,11 +137,11 @@ function SearchBox() {
                   onClick={() => setOpen(false)}
                 >
                   <div className="text-sm font-semibold text-theme truncate">
-                    {item.title}
+                    {renderHighlight(item.title)}
                   </div>
                   {item.snippet && (
                     <div className="text-xs text-muted mt-1">
-                      {item.snippet}
+                      {renderHighlight(item.snippet)}
                     </div>
                   )}
                   <div className="text-xs text-muted mt-1 flex gap-2">

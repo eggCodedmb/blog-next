@@ -9,17 +9,25 @@ import ToastNotice from "@/components/feedback/ToastNotice";
 import { useRouter } from "next/navigation";
 function FormPost({
   onSubmit,
+  initialPost,
+  submitLabel = "发布",
+  redirectTo = "/",
+  cache = true,
 }: {
   onSubmit: (
     post: CreatePostParams,
   ) => Promise<{ success: boolean; message?: string }>;
+  initialPost?: Partial<CreatePostParams>;
+  submitLabel?: string;
+  redirectTo?: string;
+  cache?: boolean;
 }) {
-  const [post, setPost] = useState({
-    published: "0",
-    title: "",
-    content: "",
-    cover: "",
-    authorId: 0,
+  const [post, setPost] = useState<CreatePostParams>({
+    published: initialPost?.published ?? "0",
+    title: initialPost?.title ?? "",
+    content: initialPost?.content ?? "",
+    cover: initialPost?.cover ?? "",
+    authorId: initialPost?.authorId ?? 0,
   });
   const router = useRouter();
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -30,17 +38,17 @@ function FormPost({
   );
   const [isPending, startTransition] = useTransition();
 
-  function isEditorContentValid(html: string) {
+  function isEditorContentEmpty(html: string) {
     const text = html
       .replace(/<[^>]*>/g, " ")
       .replace(/&nbsp;/g, " ")
       .trim();
-    return text.length > 0;
+    return text.length === 0;
   }
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isEditorContentValid(post.content)) {
+    if (isEditorContentEmpty(post.content as string)) {
       setToastVariant("error");
       setToastMessage("内容不能为空");
       setToastOpen(true);
@@ -60,7 +68,7 @@ function FormPost({
           setToastOpen(true);
           clear("content");
           window.setTimeout(() => {
-            router.replace("/");
+            router.replace(redirectTo);
             router.refresh();
             // window.location.href = "/";
           }, 300);
@@ -115,13 +123,14 @@ function FormPost({
             </Form.Message>
           </div>
           <Editor
+            content={post.content as string}
             onChange={(html) => setPost({ ...post, content: html.trim() })}
-            cache={true}
+            cache={cache}
           />
           <Form.Control asChild>
             <textarea
               required
-              value={post.content.replace(/<[^>]+>/g, "").trim()}
+              value={post?.content?.replace(/<[^>]+>/g, "").trim()}
               readOnly
               className="hidden"
             />
@@ -133,7 +142,7 @@ function FormPost({
               className="btn btn-primary mt-2.5 h-9 w-30 shadow-sm hover:opacity-90"
               type="submit"
             >
-              发布
+              {submitLabel}
             </button>
           </div>
         </Form.Submit>

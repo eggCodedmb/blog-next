@@ -1,7 +1,7 @@
 import { useTiptap, useTiptapState } from "@tiptap/react";
 import { menuBarStateSelector } from "./menuBarState";
 import Image from "next/image";
-import { UploadButton } from "@/lib/uploadthing/uploadthing";
+import ImageUploadButton from "./ImageUploadButton";
 
 /**
  * Menu bar component that uses useTiptap and useTiptapState hooks
@@ -55,13 +55,20 @@ function MenuBar() {
             alt="清除格式"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
           className="editor-btn"
           onClick={() => editor.chain().focus().clearNodes().run()}
         >
-          <Image src="./assets/标记.svg" alt="标记" width={16} height={16} />
+          <Image
+            src="./assets/标记.svg"
+            alt="标记"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().setParagraph().run()}
@@ -72,6 +79,7 @@ function MenuBar() {
             alt="段落"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
@@ -131,6 +139,7 @@ function MenuBar() {
             alt="无序列表"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
@@ -142,19 +151,32 @@ function MenuBar() {
             alt="有序列表"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={`editor-btn ${editorState.isCodeBlock ? "is-active" : ""}`}
         >
-          <Image src="./assets/code.svg" alt="代码" width={16} height={16} />
+          <Image
+            src="./assets/code.svg"
+            alt="代码"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={`editor-btn ${editorState.isBlockquote ? "is-active" : ""}`}
         >
-          <Image src="./assets/引用.svg" alt="引用" width={16} height={16} />
+          <Image
+            src="./assets/引用.svg"
+            alt="引用"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
@@ -165,27 +187,46 @@ function MenuBar() {
             alt="水平分割线"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
           onClick={() => editor.chain().focus().setHardBreak().run()}
           className="editor-btn"
         >
-          <Image src="./assets/换行.svg" alt="换行" width={16} height={16} />
+          <Image
+            src="./assets/换行.svg"
+            alt="换行"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editorState.canUndo}
           className="editor-btn"
         >
-          <Image src="./assets/撤销.svg" alt="撤销" width={16} height={16} />
+          <Image
+            src="./assets/撤销.svg"
+            alt="撤销"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editorState.canRedo}
           className="editor-btn"
         >
-          <Image src="./assets/重做.svg" alt="重做" width={16} height={16} />
+          <Image
+            src="./assets/重做.svg"
+            alt="重做"
+            width={16}
+            height={16}
+            className="editor-icon"
+          />
         </button>
         <button
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
@@ -198,6 +239,7 @@ function MenuBar() {
             alt="靠左对齐"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
@@ -211,6 +253,7 @@ function MenuBar() {
             alt="居中对齐"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
         <button
@@ -224,40 +267,18 @@ function MenuBar() {
             alt="靠右对齐"
             width={16}
             height={16}
+            className="editor-icon"
           />
         </button>
-        <UploadButton
-          className="custom-class"
-          endpoint="imageUploader"
-          onClientUploadComplete={(res) => {
-            const url = res?.[0]?.ufsUrl;
-            if (url) {
-              editor.chain().focus().setImage({ src: url }).run();
-            }
+        <ImageUploadButton
+          variant="solid"
+          size="sm"
+          label="插入图片"
+          onUploadComplete={(url) => {
+            editor.chain().focus().setImage({ src: url }).run();
           }}
           onUploadError={(error) => {
             console.error(error);
-          }}
-          appearance={{
-            container: "editor-upload",
-            button: "editor-upload-btn",
-            allowedContent: "editor-upload-hint",
-          }}
-          content={{
-            button: (
-              <span className="editor-upload-icon" aria-label="插入图片">
-                <Image
-                  src="./assets/_图片.svg"
-                  alt="插入图片"
-                  width={16}
-                  height={16}
-                />
-              </span>
-            ),
-            allowedContent: "",
-          }}
-          config={{
-            mode: "auto",
           }}
         />
       </div>

@@ -28,7 +28,7 @@ interface TiptapEditorProps {
 }
 
 function TiptapEditor({ content, onChange, cache = false }: TiptapEditorProps) {
-  const cachedContent = load("content");
+  const cachedContent = cache ? load("content") : null;
   const editor = useEditor({
     extensions: [...extensions],
     content: cachedContent || content || "",

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { NAV_LINKS } from "@/constants";
 import { usePathname } from "next/navigation";
+import { Home, User, Info, FileText, ShieldCheck } from "lucide-react";
 // import Image from "next/image";
 function NavTab({ isAdmin }: { isAdmin: boolean }) {
   const isActive = usePathname();
@@ -15,11 +16,19 @@ function NavTab({ isAdmin }: { isAdmin: boolean }) {
         },
       ]
     : NAV_LINKS;
+
+  const iconMap: Record<string, React.ElementType> = {
+    "/": Home,
+    "/profile": User,
+    "/my-posts": FileText,
+    "/about": Info,
+    "/review": ShieldCheck,
+  };
+
   return (
-    <div className="w-full h-full flex items-center gap-4">
+    <div className="w-full h-full flex items-center gap-4 lg:gap-6 flex-nowrap whitespace-nowrap">
       {links.map((item) => (
         <Link key={item.href} href={item.href}>
-          {/* <Image src={item.icon} alt={item.label} width={24} height={24} /> */}
           <span
             className={
               isActive === item.href
@@ -27,12 +36,14 @@ function NavTab({ isAdmin }: { isAdmin: boolean }) {
                 : "text-theme font-semibold"
             }
           >
-            {item.label}
-            <p
-              className={
-                isActive === item.href ? "border-b-2 border-primary" : ""
-              }
-            ></p>
+            <span className="hidden md:inline-flex lg:hidden items-center">
+              {(() => {
+                const Icon = iconMap[item.href] || FileText;
+                return <Icon size={18} />;
+              })()}
+            </span>
+            <span className="hidden lg:inline-flex">{item.label}</span>
+            <p className={isActive === item.href ? "border-b-2 border-primary" : ""}></p>
           </span>
         </Link>
       ))}

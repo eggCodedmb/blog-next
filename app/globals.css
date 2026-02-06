@@ -16,6 +16,8 @@
   --border: rgba(15, 23, 42, 0.08);
   --shadow: rgba(15, 23, 42, 0.08);
   --glow: rgba(59, 109, 246, 0.2);
+  --editor-icon-filter: none;
+  --editor-icon-active-filter: invert(1);
 }
 
 /* ===== Dark Theme ===== */
@@ -32,6 +34,8 @@
   --border: rgba(148, 163, 184, 0.12);
   --shadow: rgba(2, 6, 23, 0.6);
   --glow: rgba(118, 167, 255, 0.45);
+  --editor-icon-filter: invert(1) brightness(1.05);
+  --editor-icon-active-filter: invert(1);
 }
 
 body {

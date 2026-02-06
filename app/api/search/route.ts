@@ -10,6 +10,10 @@ type SearchDoc = {
   createdAt: string;
 };
 
+function stripHtml(value: string) {
+  return value.replace(/<[^>]*>/g, "");
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = (searchParams.get("q") || "").trim();
@@ -20,7 +24,7 @@ export async function GET(request: Request) {
   }
 
   const posts = await prisma.post.findMany({
-    where: { published: "1" },
+    where: { published: { in: ["1", "true"] } },
     select: {
       id: true,
       title: true,
@@ -38,7 +42,7 @@ export async function GET(request: Request) {
   const docs: SearchDoc[] = posts.map((post) => ({
     id: post.id,
     title: post.title,
-    content: post.content ?? "",
+    content: stripHtml(post.content ?? ""),
     authorName: post.author?.name ?? null,
     createdAt: post.createdAt.toISOString(),
   }));

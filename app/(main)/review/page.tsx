@@ -1,13 +1,27 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { getUser } from "@/lib/user/user.action";
+import ReviewInfiniteSection from "@/components/review/ReviewInfiniteSection";
+import ReviewFilter from "@/components/review/ReviewFilter";
 import {
   approvePost,
-  getPendingPosts,
+  getReviewCount,
+  getReviewPosts,
   rejectPost,
 } from "@/lib/post/post.action";
 
-export default async function ReviewPage() {
+type ReviewStatus = "pending" | "approved" | "rejected";
+
+function getStatusLabel(status: ReviewStatus) {
+  if (status === "approved") return "已审核";
+  if (status === "rejected") return "已拒绝";
+  return "待审核";
+}
+
+export default async function ReviewPage({
+  searchParams,
+}: {
+  searchParams?: { status?: string };
+}) {
   const user = await getUser();
 
   if (!user?.isAdmin) {
@@ -18,7 +32,17 @@ export default async function ReviewPage() {
     );
   }
 
-  const posts = await getPendingPosts();
+  const statusParam = searchParams?.status;
+  const status: ReviewStatus =
+    statusParam === "approved" || statusParam === "rejected"
+      ? statusParam
+      : "pending";
+
+  const pageSize = 10;
+  const [posts, total] = await Promise.all([
+    getReviewPosts(status, 1, pageSize),
+    getReviewCount(status),
+  ]);
 
   const approveAction = async (formData: FormData) => {
     "use server";
@@ -47,7 +71,7 @@ export default async function ReviewPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl px-4 py-8">
+    <div className="w-full h-[calc(100vh-64px)] px-4 py-6 overflow-hidden flex flex-col">
       <div className="relative overflow-hidden rounded-2xl border border-theme bg-card p-6 sm:p-8 card-glow">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--primary)_16%,transparent),transparent_55%)]" />
         <div className="relative flex flex-wrap items-center justify-between gap-6">
@@ -62,84 +86,31 @@ export default async function ReviewPage() {
               处理社区提交，确保内容质量与规范
             </p>
           </div>
-          <div className="min-w-[160px] rounded-xl border border-theme bg-[color-mix(in_srgb,var(--card)_90%,transparent)] px-4 py-3 text-center">
-            <p className="text-xs text-muted">待审核</p>
+          <div className="min-w-40 rounded-xl border border-theme bg-[color-mix(in_srgb,var(--card)_90%,transparent)] px-4 py-3 text-center">
+            <p className="text-xs text-muted">{getStatusLabel(status)}</p>
             <p className="mt-1 text-2xl font-semibold text-theme">
-              {posts.length}
+              {total}
             </p>
           </div>
         </div>
       </div>
 
-      {posts.length === 0 ? (
-        <div className="mt-6 rounded-2xl border border-theme bg-card p-10 text-center text-muted card-glow">
-          暂无待审核帖子
-        </div>
-      ) : (
-        <div className="mt-6 space-y-4">
-          {posts.map((post) => {
-            const preview = (post.content || "")
-              .replace(/<[^>]*>/g, "")
-              .trim()
-              .slice(0, 140);
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <ReviewFilter value={status} />
+        <span className="text-sm text-muted">
+          {getStatusLabel(status)} {total} 篇
+        </span>
+      </div>
 
-            return (
-              <div
-                key={post.id}
-                className="rounded-2xl border border-theme bg-card p-5 sm:p-6 card-glow"
-              >
-                <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                      <span className="inline-flex items-center rounded-full border border-theme px-2 py-0.5">
-                        待审核
-                      </span>
-                      <span>
-                        {new Date(post.createdAt).toLocaleString()}
-                      </span>
-                      <span>·</span>
-                      <span>
-                        {post.author?.name ||
-                          post.author?.email ||
-                          "匿名用户"}
-                      </span>
-                    </div>
-                    <Link
-                      href={`/content/${post.id}`}
-                      className="text-lg sm:text-xl font-semibold text-theme hover:underline font-display"
-                    >
-                      {post.title}
-                    </Link>
-                    {preview ? (
-                      <p className="text-sm text-muted line-clamp-3">
-                        {preview}...
-                      </p>
-                    ) : null}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Link
-                      href={`/content/${post.id}`}
-                      className="btn btn-outline text-muted"
-                    >
-                      查看
-                    </Link>
-                    <form action={approveAction}>
-                      <input type="hidden" name="id" value={post.id} />
-                      <button className="btn btn-primary">通过</button>
-                    </form>
-                    <form action={rejectAction}>
-                      <input type="hidden" name="id" value={post.id} />
-                      <button className="btn btn-outline text-muted">
-                        拒绝
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <div className="mt-4 flex-1 min-h-0">
+        <ReviewInfiniteSection
+          initialPosts={posts}
+          pageSize={pageSize}
+          status={status}
+          approveAction={approveAction}
+          rejectAction={rejectAction}
+        />
+      </div>
     </div>
   );
 }

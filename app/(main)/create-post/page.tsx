@@ -6,8 +6,9 @@ function CreatePostPage() {
   const handleSubmit = async (values: CreatePostParams) => {
     "use server";
     const user = await getUser();
+
     if (!user) {
-      return { success: false, message: "用户未登录" };
+      return { success: false, message: "未登录" };
     }
     const post = await createPost({
       ...values,
