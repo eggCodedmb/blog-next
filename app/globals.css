@@ -39,7 +39,8 @@
 }
 
 body {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1200px 600px at 10% -10%,
       var(--bg-glow-1),
       transparent 60%
@@ -133,7 +134,7 @@ body {
   .dark .card-glow {
     animation: breathe 4s ease-in-out infinite;
   }
-  
+
   .dmb-btn-primary {
     background-color: var(--color-primary);
     @apply px-4 py-2 rounded-md font-medium text-white transition-colors duration-200;
@@ -187,6 +188,14 @@ body {
   .dmb-btn-info:disabled {
     background-color: color-mix(in srgb, black 20%, white);
     cursor: not-allowed;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 }
 
