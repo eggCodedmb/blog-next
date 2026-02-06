@@ -41,7 +41,7 @@ export type PostMinAggregateOutputType = {
   title: string | null
   cover: string | null
   content: string | null
-  published: boolean | null
+  published: string | null
   authorId: number | null
   createdAt: Date | null
 }
@@ -51,7 +51,7 @@ export type PostMaxAggregateOutputType = {
   title: string | null
   cover: string | null
   content: string | null
-  published: boolean | null
+  published: string | null
   authorId: number | null
   createdAt: Date | null
 }
@@ -200,7 +200,7 @@ export type PostGroupByOutputType = {
   title: string
   cover: string
   content: string | null
-  published: boolean
+  published: string
   authorId: number
   createdAt: Date
   _count: PostCountAggregateOutputType | null
@@ -233,7 +233,7 @@ export type PostWhereInput = {
   title?: Prisma.StringFilter<"Post"> | string
   cover?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
-  published?: Prisma.BoolFilter<"Post"> | boolean
+  published?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.IntFilter<"Post"> | number
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -262,7 +262,7 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Post"> | string
   cover?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
-  published?: Prisma.BoolFilter<"Post"> | boolean
+  published?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.IntFilter<"Post"> | number
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -293,7 +293,7 @@ export type PostScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Post"> | string
   cover?: Prisma.StringWithAggregatesFilter<"Post"> | string
   content?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
-  published?: Prisma.BoolWithAggregatesFilter<"Post"> | boolean
+  published?: Prisma.StringWithAggregatesFilter<"Post"> | string
   authorId?: Prisma.IntWithAggregatesFilter<"Post"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Post"> | Date | string
 }
@@ -302,7 +302,7 @@ export type PostCreateInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutPostsInput
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
@@ -314,7 +314,7 @@ export type PostUncheckedCreateInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   authorId: number
   createdAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
@@ -325,7 +325,7 @@ export type PostUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
@@ -337,7 +337,7 @@ export type PostUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
@@ -349,7 +349,7 @@ export type PostCreateManyInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   authorId: number
   createdAt?: Date | string
 }
@@ -358,7 +358,7 @@ export type PostUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -367,7 +367,7 @@ export type PostUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -469,10 +469,6 @@ export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
   deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type PostCreateNestedOneWithoutCommentsInput = {
   create?: Prisma.XOR<Prisma.PostCreateWithoutCommentsInput, Prisma.PostUncheckedCreateWithoutCommentsInput>
   connectOrCreate?: Prisma.PostCreateOrConnectWithoutCommentsInput
@@ -505,7 +501,7 @@ export type PostCreateWithoutAuthorInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutPostInput
@@ -516,7 +512,7 @@ export type PostUncheckedCreateWithoutAuthorInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPostInput
@@ -556,7 +552,7 @@ export type PostScalarWhereInput = {
   title?: Prisma.StringFilter<"Post"> | string
   cover?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
-  published?: Prisma.BoolFilter<"Post"> | boolean
+  published?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.IntFilter<"Post"> | number
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
 }
@@ -565,7 +561,7 @@ export type PostCreateWithoutCommentsInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutPostsInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutPostInput
@@ -576,7 +572,7 @@ export type PostUncheckedCreateWithoutCommentsInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   authorId: number
   createdAt?: Date | string
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPostInput
@@ -602,7 +598,7 @@ export type PostUpdateWithoutCommentsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutPostNestedInput
@@ -613,7 +609,7 @@ export type PostUncheckedUpdateWithoutCommentsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPostNestedInput
@@ -623,7 +619,7 @@ export type PostCreateWithoutFavoritesInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutPostsInput
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
@@ -634,7 +630,7 @@ export type PostUncheckedCreateWithoutFavoritesInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   authorId: number
   createdAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
@@ -660,7 +656,7 @@ export type PostUpdateWithoutFavoritesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
@@ -671,7 +667,7 @@ export type PostUncheckedUpdateWithoutFavoritesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
@@ -682,7 +678,7 @@ export type PostCreateManyAuthorInput = {
   title: string
   cover: string
   content?: string | null
-  published?: boolean
+  published?: string
   createdAt?: Date | string
 }
 
@@ -690,7 +686,7 @@ export type PostUpdateWithoutAuthorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutPostNestedInput
@@ -701,7 +697,7 @@ export type PostUncheckedUpdateWithoutAuthorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPostNestedInput
@@ -712,7 +708,7 @@ export type PostUncheckedUpdateManyWithoutAuthorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   cover?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  published?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -828,7 +824,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     title: string
     cover: string
     content: string | null
-    published: boolean
+    published: string
     authorId: number
     createdAt: Date
   }, ExtArgs["result"]["post"]>
@@ -1261,7 +1257,7 @@ export interface PostFieldRefs {
   readonly title: Prisma.FieldRef<"Post", 'String'>
   readonly cover: Prisma.FieldRef<"Post", 'String'>
   readonly content: Prisma.FieldRef<"Post", 'String'>
-  readonly published: Prisma.FieldRef<"Post", 'Boolean'>
+  readonly published: Prisma.FieldRef<"Post", 'String'>
   readonly authorId: Prisma.FieldRef<"Post", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Post", 'DateTime'>
 }

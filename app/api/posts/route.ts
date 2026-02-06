@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const pageSize = Number(searchParams.get("pageSize") || 10);
 
   const posts = await prisma.post.findMany({
+    where: { published: "1" },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * pageSize,
     take: pageSize,

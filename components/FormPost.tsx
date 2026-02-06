@@ -15,7 +15,7 @@ function FormPost({
   ) => Promise<{ success: boolean; message?: string }>;
 }) {
   const [post, setPost] = useState({
-    published: false,
+    published: "0",
     title: "",
     content: "",
     cover: "",
@@ -30,11 +30,17 @@ function FormPost({
   );
   const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    console.log(post, "提交");
+  function isEditorContentValid(html: string) {
+    const text = html
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .trim();
+    return text.length > 0;
+  }
 
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (post.content.trim() === "") {
+    if (isEditorContentValid(post.content)) {
       setToastVariant("error");
       setToastMessage("内容不能为空");
       setToastOpen(true);
@@ -64,8 +70,10 @@ function FormPost({
           setToastOpen(true);
         }
       } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "提交失败，请稍后再试";
         setToastVariant("error");
-        setToastMessage("提交失败");
+        setToastMessage(message);
         setToastOpen(true);
       }
     });

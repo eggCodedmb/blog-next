@@ -44,9 +44,9 @@ export default function RootLayout({
         <main className="flex flex-row relative">
           {/* 左侧边栏 */}
           {/* <LeftSidebar  /> */}
-          <section className="flex flex-col flex-1">
+          <section className="flex flex-col flex-1 items-center">
             {/* 主内容 */}
-            <div className="w-full flex justify-center">{children}</div>
+            <div className="w-full max-w-4xl">{children}</div>
           </section>
           {/* 右侧边栏 */}
           {/* <RightSidebar /> */}

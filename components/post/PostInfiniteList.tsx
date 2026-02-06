@@ -60,7 +60,7 @@ export default function PostInfiniteList({
   }, [hasMore, isLoading, page, pageSize, rootRef]);
 
   if (!posts.length) {
-    return <div className="text-center py-20 text-muted">暂无文章 ✍️</div>;
+    return <div className="w-full max-w-4xl text-center py-20 text-muted">暂无文章 ✍️</div>;
   }
 
   return (

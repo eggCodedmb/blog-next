@@ -3,11 +3,21 @@ import Link from "next/link";
 import { NAV_LINKS } from "@/constants";
 import { usePathname } from "next/navigation";
 // import Image from "next/image";
-function NavTab() {
+function NavTab({ isAdmin }: { isAdmin: boolean }) {
   const isActive = usePathname();
+  const links = isAdmin
+    ? [
+        ...NAV_LINKS,
+        {
+          href: "/review",
+          label: "审核",
+          icon: "",
+        },
+      ]
+    : NAV_LINKS;
   return (
     <div className="w-full h-full flex items-center gap-4">
-      {NAV_LINKS.map((item) => (
+      {links.map((item) => (
         <Link key={item.href} href={item.href}>
           {/* <Image src={item.icon} alt={item.label} width={24} height={24} /> */}
           <span

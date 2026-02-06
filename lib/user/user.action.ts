@@ -34,7 +34,7 @@ export async function getUser() {
 
     return await prisma.user.findUnique({
       where: { id: payload.id },
-      select: { id: true, name: true, email: true, avatar: true },
+      select: { id: true, name: true, email: true, avatar: true, isAdmin: true },
     });
   } catch {
     return null;

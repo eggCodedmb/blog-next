@@ -1,10 +1,11 @@
+"use server";
 import { prisma } from "../prisma";
 import { PageParams } from "@/types/page";
 export interface CreatePostParams {
   authorId: number;
   title: string;
   content: string | null;
-  published?: boolean;
+  published?: string;
   cover: string;
 }
 export async function createPost(post: CreatePostParams) {
@@ -17,11 +18,11 @@ export async function createPost(post: CreatePostParams) {
 export async function getPostAll(data: PageParams) {
   const { page = 1, pageSize = 10 } = data;
   const posts = await prisma.post.findMany({
+    where: { published: "1" },
     orderBy: { createdAt: data.createdAt || "desc" },
     skip: (page - 1) * pageSize,
     take: pageSize,
     include: {
-      // author: true,
       // 字段选择
       author: {
         select: {
@@ -142,4 +143,41 @@ export async function getPostByAuthorId(id: number, data: PageParams) {
     },
   });
   return posts;
+}
+
+// 待审核文章
+export async function getPendingPosts() {
+  const posts = await prisma.post.findMany({
+    where: { published: "0" },
+    orderBy: { createdAt: "desc" },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+  return posts;
+}
+
+// 审核通过
+export async function approvePost(id: number) {
+  const res = await prisma.post.update({
+    where: { id },
+    data: { published: "1" },
+  });
+  return res;
+}
+
+// 审核不通过
+export async function rejectPost(id: number) {
+  const res = await prisma.post.update({
+    where: { id },
+    data: { published: "2" },
+  });
+  return res;
 }

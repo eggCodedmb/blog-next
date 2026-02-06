@@ -26,6 +26,7 @@ interface TiptapEditorProps {
   // 开启缓存
   cache?: boolean;
 }
+
 function TiptapEditor({ content, onChange, cache = false }: TiptapEditorProps) {
   const cachedContent = load("content");
   const editor = useEditor({
