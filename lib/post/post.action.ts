@@ -18,7 +18,7 @@ export async function createPost(post: CreatePostParams) {
 export async function getPostAll(data: PageParams) {
   const { page = 1, pageSize = 10 } = data;
   const posts = await prisma.post.findMany({
-    where: { published: { in: ["1", "true"] } },
+    where: { published: "1" },
     orderBy: { createdAt: data.createdAt || "desc" },
     skip: (page - 1) * pageSize,
     take: pageSize,
@@ -148,7 +148,7 @@ export async function getPostByAuthorId(id: number, data: PageParams) {
 // 待审核文章
 export async function getPendingPosts() {
   const posts = await prisma.post.findMany({
-    where: { published: { in: ["0", "false"] } },
+    where: { published: "0" },
     orderBy: { createdAt: "desc" },
     include: {
       author: {
@@ -165,18 +165,12 @@ export async function getPendingPosts() {
 }
 
 export async function getReviewPosts(
-  status: "pending" | "approved" | "rejected",
+  status: "0" | "1" | "2",
   page = 1,
   pageSize = 10,
 ) {
-  const publishedMap = {
-    pending: ["0", "false"],
-    approved: ["1", "true"],
-    rejected: ["2"],
-  } as const;
-
   const posts = await prisma.post.findMany({
-    where: { published: { in: publishedMap[status] } },
+    where: { published: status },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * pageSize,
     take: pageSize,
@@ -195,16 +189,10 @@ export async function getReviewPosts(
 }
 
 export async function getReviewCount(
-  status: "pending" | "approved" | "rejected",
+  status: "0" | "1" | "2",
 ) {
-  const publishedMap = {
-    pending: ["0", "false"],
-    approved: ["1", "true"],
-    rejected: ["2"],
-  } as const;
-
   return prisma.post.count({
-    where: { published: { in: publishedMap[status] } },
+    where: { published: status },
   });
 }
 

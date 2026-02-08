@@ -2,13 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/user/user.action";
 
-const STATUS_MAP = {
-  pending: ["0", "false"],
-  approved: ["1", "true"],
-  rejected: ["2"],
-} as const;
+type ReviewStatus = "0" | "1" | "2";
 
-type ReviewStatus = keyof typeof STATUS_MAP;
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const user = await getUser();
@@ -17,14 +13,16 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const status = (searchParams.get("status") || "pending") as ReviewStatus;
+  const statusParam = searchParams.get("status");
+  const status: ReviewStatus =
+    statusParam === "0" || statusParam === "1" || statusParam === "2"
+      ? statusParam
+      : "0";
   const page = Number(searchParams.get("page") || 1);
   const pageSize = Math.min(Number(searchParams.get("pageSize") || 10), 50);
 
-  const published = STATUS_MAP[status] ?? STATUS_MAP.pending;
-
   const posts = await prisma.post.findMany({
-    where: { published: { in: published } },
+    where: { published: status },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * pageSize,
     take: pageSize,

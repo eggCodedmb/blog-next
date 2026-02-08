@@ -28,6 +28,15 @@
   .tiptap ul,
   .tiptap ol {
     @apply pl-4 my-5 mr-1;
+    list-style-position: outside;
+  }
+
+  .tiptap ul {
+    list-style-type: disc;
+  }
+
+  .tiptap ol {
+    list-style-type: decimal;
   }
 
   .tiptap li p {
@@ -221,6 +230,35 @@
 
   .editor-loading {
     @apply absolute inset-0 flex items-center justify-center bg-[color-mix(in_srgb,var(--card)_85%,transparent)] backdrop-blur;
+  }
+
+  @media (max-width: 768px) {
+    .editor-shell {
+      @apply rounded-xl;
+    }
+
+    .editor-toolbar {
+      @apply px-2 py-2;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .editor-toolbar-group {
+      @apply flex-nowrap;
+      width: max-content;
+    }
+
+    .editor-btn {
+      @apply px-2 py-1 text-[11px];
+    }
+
+    .editor-upload-btn {
+      @apply px-2 py-1 text-[11px];
+    }
+
+    .editor-content {
+      @apply max-h-96;
+    }
   }
 
   .button-group button:disabled {

@@ -1,5 +1,9 @@
 import { getUser } from "@/lib/user/user.action";
-import { getPostById, updatePost, CreatePostParams } from "@/lib/post/post.action";
+import {
+  getPostById,
+  updatePost,
+  CreatePostParams,
+} from "@/lib/post/post.action";
 import FormPost from "@/components/FormPost";
 
 export default async function EditMyPostPage({
@@ -8,6 +12,8 @@ export default async function EditMyPostPage({
   params: { id: string };
 }) {
   const user = await getUser();
+  const postId = await params;
+
   if (!user) {
     return (
       <div className="w-full max-w-4xl px-4 py-16 text-center text-muted">
@@ -16,7 +22,8 @@ export default async function EditMyPostPage({
     );
   }
 
-  const id = Number(params.id);
+  const id = Number(postId.id);
+
   if (!id) {
     return (
       <div className="w-full max-w-4xl px-4 py-16 text-center text-muted">
@@ -48,7 +55,7 @@ export default async function EditMyPostPage({
       ...values,
       authorId: currentUser.id,
       cover: values.cover || currentPost.cover || "",
-      published: values.published || currentPost.published || "0",
+      published: "0", //编辑后重新审核
     });
     return { success: true, message: "保存成功" };
   };

@@ -1,27 +1,36 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { Sun, Moon, Monitor } from "lucide-react";
 
 export default function ThemeToggle() {
   const { theme, mode, toggle } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const label =
-    mode === "system" ? "跟随系统主题" : theme === "dark" ? "深色主题" : "浅色主题";
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div
+    <button
       onClick={toggle}
       className="bg-surface text-theme hover:scale-105"
-      aria-label={label}
-      suppressHydrationWarning
-      title={label}
+      aria-label="Toggle theme"
+      title="Toggle theme"
+      type="button"
     >
-      {mode === "system" ? <Monitor /> : theme === "dark" ? <Sun /> : <Moon />}
-    </div>
+      {mounted ? (
+        mode === "system" ? (
+          <Monitor />
+        ) : theme === "dark" ? (
+          <Sun />
+        ) : (
+          <Moon />
+        )
+      ) : (
+        <span className="block size-5" aria-hidden="true" />
+      )}
+    </button>
   );
 }

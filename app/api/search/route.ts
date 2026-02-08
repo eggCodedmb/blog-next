@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   }
 
   const posts = await prisma.post.findMany({
-    where: { published: { in: ["1", "true"] } },
+    where: { published: "1" },
     select: {
       id: true,
       title: true,

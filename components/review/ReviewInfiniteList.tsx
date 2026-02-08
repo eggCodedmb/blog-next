@@ -3,42 +3,41 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { PostItemProps } from "@/types/post";
 import ReviewItem from "./ReviewItem";
+import { useReviewContext } from "./ReviewContext";
 
-type ReviewStatus = "pending" | "approved" | "rejected";
+type ReviewStatus = "0" | "1" | "2";
 
 function getStatusLabel(status: ReviewStatus) {
-  if (status === "approved") return "已审核";
-  if (status === "rejected") return "已拒绝";
+  if (status === "1") return "已审核";
+  if (status === "2") return "已拒绝";
   return "待审核";
 }
 
 export default function ReviewInfiniteList({
-  initialPosts,
-  pageSize,
-  status,
+  // initialPosts,
   rootRef,
-  approveAction,
-  rejectAction,
 }: {
-  initialPosts: PostItemProps[];
-  pageSize: number;
-  status: ReviewStatus;
+  // initialPosts: PostItemProps[];
   rootRef?: RefObject<HTMLElement | null>;
-  approveAction: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
-  rejectAction: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
 }) {
-  const [posts, setPosts] = useState<PostItemProps[]>(initialPosts);
+  const { posts, pageSize, status, approveAction, rejectAction } =
+    useReviewContext();
+  // const [posts, setPosts] = useState<PostItemProps[]>(initialPosts);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initialPosts.length >= pageSize);
+  const [hasMore, setHasMore] = useState(posts.length >= pageSize);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const activeRequestId = useRef(0);
+  const activeController = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    setPosts(initialPosts);
+    // setPosts(initialPosts);
     setPage(1);
-    setHasMore(initialPosts.length >= pageSize);
+    setHasMore(posts.length >= pageSize);
     setIsLoading(false);
-  }, [initialPosts, pageSize, status]);
+    activeController.current?.abort();
+    activeController.current = null;
+  }, [pageSize, status]);
 
   useEffect(() => {
     if (!hasMore || isLoading) return;
@@ -50,25 +49,33 @@ export default function ReviewInfiniteList({
         if (!entries[0]?.isIntersecting) return;
         setIsLoading(true);
         const nextPage = page + 1;
+        const requestId = ++activeRequestId.current;
+        activeController.current?.abort();
+        const controller = new AbortController();
+        activeController.current = controller;
         fetch(
           `/api/review?status=${status}&page=${nextPage}&pageSize=${pageSize}`,
+          { signal: controller.signal },
         )
           .then((res) => res.json())
           .then((data: PostItemProps[]) => {
+            if (requestId !== activeRequestId.current) return;
             if (!Array.isArray(data) || data.length === 0) {
               setHasMore(false);
               return;
             }
-            setPosts((prev) => [...prev, ...data]);
+            // setPosts((prev) => [...prev, ...data]);
             setPage(nextPage);
             if (data.length < pageSize) {
               setHasMore(false);
             }
           })
           .catch(() => {
+            if (requestId !== activeRequestId.current) return;
             setHasMore(false);
           })
           .finally(() => {
+            if (requestId !== activeRequestId.current) return;
             setIsLoading(false);
           });
       },
@@ -79,7 +86,10 @@ export default function ReviewInfiniteList({
     );
 
     observer.observe(sentinel);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      activeController.current?.abort();
+    };
   }, [hasMore, isLoading, page, pageSize, rootRef, status]);
 
   if (!posts.length) {

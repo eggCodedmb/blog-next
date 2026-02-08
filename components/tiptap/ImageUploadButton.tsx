@@ -70,7 +70,7 @@ function ImageUploadButton({
             <span className={["editor-upload-icon", iconClassName].filter(Boolean).join(" ")}>
               {icon ?? (
                 <Image
-                  src="./assets/_图片.svg"
+                  src="/assets/_图片.svg"
                   alt={label}
                   width={16}
                   height={16}

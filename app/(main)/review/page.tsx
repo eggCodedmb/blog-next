@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { getUser } from "@/lib/user/user.action";
 import ReviewInfiniteSection from "@/components/review/ReviewInfiniteSection";
 import ReviewFilter from "@/components/review/ReviewFilter";
+import { ReviewProvider } from "@/components/review/ReviewContext";
 import {
   approvePost,
   getReviewCount,
@@ -9,18 +10,20 @@ import {
   rejectPost,
 } from "@/lib/post/post.action";
 
-type ReviewStatus = "pending" | "approved" | "rejected";
+type ReviewStatus = "0" | "1" | "2";
+
+export const dynamic = "force-dynamic";
 
 function getStatusLabel(status: ReviewStatus) {
-  if (status === "approved") return "已审核";
-  if (status === "rejected") return "已拒绝";
+  if (status === "1") return "已审核";
+  if (status === "2") return "已拒绝";
   return "待审核";
 }
 
 export default async function ReviewPage({
   searchParams,
 }: {
-  searchParams?: { status?: string };
+  searchParams?: Promise<{ status?: string | string[] }>;
 }) {
   const user = await getUser();
 
@@ -32,13 +35,16 @@ export default async function ReviewPage({
     );
   }
 
-  const statusParam = searchParams?.status;
+  const resolvedSearchParams = await searchParams;
+  const rawStatus = resolvedSearchParams?.status;
+  const statusParam = Array.isArray(rawStatus) ? rawStatus[0] : rawStatus;
   const status: ReviewStatus =
-    statusParam === "approved" || statusParam === "rejected"
+    statusParam === "0" || statusParam === "1" || statusParam === "2"
       ? statusParam
-      : "pending";
+      : "0";
 
   const pageSize = 10;
+
   const [posts, total] = await Promise.all([
     getReviewPosts(status, 1, pageSize),
     getReviewCount(status),
@@ -88,29 +94,29 @@ export default async function ReviewPage({
           </div>
           <div className="min-w-40 rounded-xl border border-theme bg-[color-mix(in_srgb,var(--card)_90%,transparent)] px-4 py-3 text-center">
             <p className="text-xs text-muted">{getStatusLabel(status)}</p>
-            <p className="mt-1 text-2xl font-semibold text-theme">
-              {total}
-            </p>
+            <p className="mt-1 text-2xl font-semibold text-theme">{total}</p>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <ReviewFilter value={status} />
-        <span className="text-sm text-muted">
-          {getStatusLabel(status)} {total} 篇
-        </span>
-      </div>
+      <ReviewProvider
+        posts={posts}
+        status={status}
+        pageSize={pageSize}
+        approveAction={approveAction}
+        rejectAction={rejectAction}
+      >
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <ReviewFilter />
+          <span className="text-sm text-muted">
+            {getStatusLabel(status)} {total} 篇
+          </span>
+        </div>
 
-      <div className="mt-4 flex-1 min-h-0">
-        <ReviewInfiniteSection
-          initialPosts={posts}
-          pageSize={pageSize}
-          status={status}
-          approveAction={approveAction}
-          rejectAction={rejectAction}
-        />
-      </div>
+        <div className="mt-4 flex-1 min-h-0">
+          <ReviewInfiniteSection />
+        </div>
+      </ReviewProvider>
     </div>
   );
 }

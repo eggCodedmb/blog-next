@@ -3,9 +3,13 @@ import { PostItemProps } from "@/types/post";
 
 type ReviewItemProps = {
   post: PostItemProps;
-  status: "pending" | "approved" | "rejected";
-  approveAction: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
-  rejectAction: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
+  status: "0" | "1" | "2";
+  approveAction: (
+    formData: FormData,
+  ) => Promise<{ success: boolean; message?: string }>;
+  rejectAction: (
+    formData: FormData,
+  ) => Promise<{ success: boolean; message?: string }>;
 };
 
 export default function ReviewItem({
@@ -20,7 +24,7 @@ export default function ReviewItem({
     .slice(0, 140);
 
   const statusLabel =
-    status === "approved" ? "已审核" : status === "rejected" ? "已拒绝" : "待审核";
+    status === "1" ? "已审核" : status === "2" ? "已拒绝" : "待审核";
 
   return (
     <div className="rounded-2xl border border-theme bg-card p-5 sm:p-6 card-glow">
@@ -32,9 +36,7 @@ export default function ReviewItem({
             </span>
             <span>{new Date(post.createdAt).toLocaleString()}</span>
             <span>·</span>
-            <span>
-              {post.author?.name || post.author?.email || "匿名用户"}
-            </span>
+            <span>{post.author?.name || post.author?.email || "匿名用户"}</span>
           </div>
           <Link
             href={`/content/${post.id}`}
@@ -43,9 +45,7 @@ export default function ReviewItem({
             {post.title}
           </Link>
           {preview ? (
-            <p className="text-sm text-muted line-clamp-3">
-              {preview}...
-            </p>
+            <p className="text-sm text-muted line-clamp-3">{preview}...</p>
           ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-2 lg:justify-end lg:min-w-[240px]">
@@ -55,14 +55,20 @@ export default function ReviewItem({
           >
             查看
           </Link>
-          <form action={approveAction}>
-            <input type="hidden" name="id" value={post.id} />
-            <button className="btn btn-primary">通过</button>
-          </form>
-          <form action={rejectAction}>
-            <input type="hidden" name="id" value={post.id} />
-            <button className="btn btn-outline text-muted">拒绝</button>
-          </form>
+          {status !== "1" && (
+            <>
+              <form action={approveAction}>
+                <input type="hidden" name="id" value={post.id} />
+                <button className="btn btn-primary">通过</button>
+              </form>
+              {status !== "2" && (
+                <form action={rejectAction}>
+                  <input type="hidden" name="id" value={post.id} />
+                  <button className="btn btn-outline text-muted">拒绝</button>
+                </form>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

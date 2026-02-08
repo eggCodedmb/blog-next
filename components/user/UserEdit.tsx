@@ -51,9 +51,10 @@ function UserEdit({ id, email, name, avatar, isAdmin }: UserEditProps) {
     });
   };
   return (
-    <section className="w-full max-w-3xl bg-card border border-theme rounded-2xl p-6 sm:p-8 card-glow">
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-2">
+    <div className="w-full px-4 sm:px-0">
+      <section className="mx-auto w-full max-w-4xl bg-card border border-theme rounded-2xl p-4 sm:p-8 card-glow">
+        <div className="flex flex-col gap-5 sm:gap-6">
+          <div className="flex flex-wrap items-center gap-2">
           <p className="text-sm font-semibold text-theme">个人信息</p>
           <span
             className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] ${
@@ -216,8 +217,9 @@ function UserEdit({ id, email, name, avatar, isAdmin }: UserEditProps) {
             </div>
           </Form.Root>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   );
 }
 

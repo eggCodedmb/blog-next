@@ -5,6 +5,9 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import TableOfContents from "@tiptap/extension-table-of-contents";
+import OrderedList from "@tiptap/extension-ordered-list";
+import BulletList from "@tiptap/extension-bullet-list";
+import ListItem from "@tiptap/extension-list-item";
 import MenuBar from "./MenuBar";
 import { Editor } from "@tiptap/core";
 import { Markdown } from "@tiptap/markdown";
@@ -14,9 +17,25 @@ import "@/app/style.css";
 
 const extensions = [
   TextStyleKit,
-  StarterKit,
+  StarterKit.configure({
+    bulletList: false,
+    orderedList: false,
+    listItem: false,
+  }),
   Image,
-  TextAlign,
+  OrderedList.configure({
+    keepMarks: true,
+    keepAttributes: false,
+  }),
+  BulletList.configure({
+    keepMarks: true,
+    keepAttributes: false,
+  }),
+  ListItem,
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
+    alignments: ["left", "center", "right"],
+  }),
   TableOfContents,
   Markdown,
 ];
@@ -36,7 +55,7 @@ function TiptapEditor({ content, onChange, cache = false }: TiptapEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "tiptap focus:outline-none min-h-40 p-6 text-theme leading-relaxed",
+          "tiptap focus:outline-none min-h-32 sm:min-h-40 p-4 sm:p-6 text-theme text-sm sm:text-base leading-relaxed",
       },
     },
     onUpdate: ({ editor }) => {

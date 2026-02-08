@@ -4,6 +4,7 @@ export interface PostItemProps {
   content: string | null;
   cover: string;
   createdAt: Date | string;
+  published:string;
   author: {
     id: number;
     name: string | null;
