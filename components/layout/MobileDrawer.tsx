@@ -32,7 +32,7 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
         aria-label="打开菜单"
         onClick={() => setOpen(true)}
       >
-        <Menu size={20} />
+        <Menu size={22} />
       </button>
 
       {open && (
@@ -43,7 +43,7 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-0 h-full w-72 bg-card border-r border-theme p-4">
+          <div className="absolute left-0 top-0 h-full w-[18.5rem] max-w-[88vw] bg-card border-r border-theme p-5">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted">导航</p>
               <button
@@ -51,7 +51,7 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
                 aria-label="关闭菜单"
                 onClick={() => setOpen(false)}
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             </div>
 
@@ -59,7 +59,7 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
               <SearchBox />
             </div>
 
-            <nav className="mt-4 flex flex-col gap-1">
+            <nav className="mt-5 flex flex-col gap-2">
               {links.map((item) => {
                 const Icon = ICONS[item.href] || FileText;
                 const active = pathname === item.href;
@@ -70,12 +70,12 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
                     onClick={() => setOpen(false)}
                     className={
                       active
-                        ? "flex items-center gap-3 rounded-lg px-3 py-2 text-primary bg-[color-mix(in_srgb,var(--card)_85%,transparent)]"
-                        : "flex items-center gap-3 rounded-lg px-3 py-2 text-theme hover:bg-[color-mix(in_srgb,var(--card)_85%,transparent)]"
+                        ? "flex items-center gap-4 rounded-xl px-4 py-3 text-primary bg-[color-mix(in_srgb,var(--card)_85%,transparent)]"
+                        : "flex items-center gap-4 rounded-xl px-4 py-3 text-theme hover:bg-[color-mix(in_srgb,var(--card)_85%,transparent)]"
                     }
                   >
-                    <Icon size={18} />
-                    <span className="text-sm font-semibold">{item.label}</span>
+                    <Icon size={20} />
+                    <span className="text-base font-semibold">{item.label}</span>
                   </Link>
                 );
               })}

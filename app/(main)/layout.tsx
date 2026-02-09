@@ -41,10 +41,10 @@ export default function RootLayout({
       >
         {/* 导航栏 */}
         <Header />
-        <main className="flex flex-row relative">
+        <main className="flex min-w-0 flex-row relative">
           {/* 左侧边栏 */}
           {/* <LeftSidebar  /> */}
-          <section className="flex flex-col flex-1 items-center">
+          <section className="flex min-w-0 flex-col flex-1 items-center">
             {/* 主内容 */}
             <div className="w-full max-w-4xl">{children}</div>
           </section>

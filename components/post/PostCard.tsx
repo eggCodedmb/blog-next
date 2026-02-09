@@ -2,15 +2,20 @@ import Image from "next/image";
 import { PostItemProps } from "@/types/post";
 import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
-// import * as AspectRatio from "@radix-ui/react-aspect-ratio";
 
 export default function PostCard({ post }: { post: PostItemProps }) {
+  const preview = (post.content || "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 140);
+
   return (
-    <article className="bg-card rounded-2xl border border-theme p-4 sm:p-5 hover:shadow-md transition-shadow card-glow overflow-hidden">
+    <article className="w-full min-w-0 bg-card rounded-2xl border border-theme p-4 sm:p-5 hover:shadow-md transition-shadow card-glow overflow-hidden">
       <Link href={`/content/${post.id}`}>
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 text-xs text-muted">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
               <span className="inline-flex items-center rounded-full border border-theme px-2 py-0.5">
                 文章
               </span>
@@ -25,14 +30,12 @@ export default function PostCard({ post }: { post: PostItemProps }) {
               {post.title}
             </h3>
 
-            <div
-              className="mt-2 text-sm text-muted line-clamp-3"
-              dangerouslySetInnerHTML={{ __html: post.content as string }}
-              suppressHydrationWarning={true}
-            ></div>
+            {preview ? (
+              <p className="mt-2 text-sm text-muted line-clamp-3 wrap-break-word">
+                {preview}...
+              </p>
+            ) : null}
           </div>
-
-          {/* <div className="hidden sm:block h-24 w-24 rounded-xl border border-theme bg-[linear-gradient(135deg,var(--bg-2),var(--card-2))]"></div> */}
         </div>
 
         <div className="mt-4 flex flex-col gap-3 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">

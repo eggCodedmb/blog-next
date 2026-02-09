@@ -26,20 +26,20 @@ function NavTab({ isAdmin }: { isAdmin: boolean }) {
   };
 
   return (
-    <div className="w-full h-full flex items-center gap-4 lg:gap-6 flex-nowrap whitespace-nowrap">
+    <div className="w-full h-full flex items-center gap-5 lg:gap-7 flex-nowrap whitespace-nowrap">
       {links.map((item) => (
         <Link key={item.href} href={item.href}>
           <span
             className={
               isActive === item.href
-                ? "text-primary font-semibold text-lg"
-                : "text-theme font-semibold"
+                ? "text-primary font-semibold text-xl"
+                : "text-theme font-semibold text-lg"
             }
           >
             <span className="hidden md:inline-flex lg:hidden items-center">
               {(() => {
                 const Icon = iconMap[item.href] || FileText;
-                return <Icon size={18} />;
+                return <Icon size={20} />;
               })()}
             </span>
             <span className="hidden lg:inline-flex">{item.label}</span>
