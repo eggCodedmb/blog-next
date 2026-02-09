@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PostItemProps } from "@/types/post";
 
-type MyPostStatus = "0" | "1" | "2";
+// type MyPostStatus = "0" | "1" | "2";
 
 function getStatusLabel(status?: string) {
   if (status === "1") return "已发布";
@@ -41,7 +41,7 @@ export default function MyPostItem({
             <p className="text-sm text-muted line-clamp-3">{preview}...</p>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-2 lg:justify-end lg:min-w-[240px]">
+        <div className="flex flex-wrap items-center gap-2 lg:justify-end lg:min-w-60">
           <Link
             href={`/content/${post.id}`}
             className="btn btn-outline text-muted"
@@ -51,7 +51,11 @@ export default function MyPostItem({
           <Link href={`/my-posts/${post.id}/edit`} className="btn btn-primary">
             编辑
           </Link>
-          <form action={onDelete}>
+          <form
+            action={async (formData) => {
+              await onDelete(formData);
+            }}
+          >
             <input type="hidden" name="id" value={post.id} />
             <button className="btn btn-outline text-muted">删除</button>
           </form>

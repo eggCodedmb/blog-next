@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { ReactNode } from "react";
 import { UploadButton } from "@/lib/uploadthing/uploadthing";
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
 
 type UploadVariant = "solid" | "soft" | "ghost";
 type UploadSize = "sm" | "md" | "lg";
 
 interface ImageUploadButtonProps {
-  endpoint?: string;
+  endpoint?: keyof OurFileRouter;
   size?: UploadSize;
   variant?: UploadVariant;
   label?: string;

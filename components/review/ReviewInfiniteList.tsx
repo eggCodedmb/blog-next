@@ -6,7 +6,7 @@ import ReviewItem from "./ReviewItem";
 import { useReviewContext } from "./ReviewContext";
 
 type ReviewStatus = "0" | "1" | "2";
-
+type MyPost = PostItemProps & { published?: string };
 function getStatusLabel(status: ReviewStatus) {
   if (status === "1") return "已审核";
   if (status === "2") return "已拒绝";
@@ -14,30 +14,20 @@ function getStatusLabel(status: ReviewStatus) {
 }
 
 export default function ReviewInfiniteList({
-  // initialPosts,
   rootRef,
 }: {
-  // initialPosts: PostItemProps[];
   rootRef?: RefObject<HTMLElement | null>;
 }) {
-  const { posts, pageSize, status, approveAction, rejectAction } =
+  const { posts: initialPosts, pageSize, status, approveAction, rejectAction } =
     useReviewContext();
-  // const [posts, setPosts] = useState<PostItemProps[]>(initialPosts);
+  const [extraPosts, setExtraPosts] = useState<MyPost[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(posts.length >= pageSize);
+  const [hasMore, setHasMore] = useState(initialPosts.length >= pageSize);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const activeRequestId = useRef(0);
   const activeController = useRef<AbortController | null>(null);
-
-  useEffect(() => {
-    // setPosts(initialPosts);
-    setPage(1);
-    setHasMore(posts.length >= pageSize);
-    setIsLoading(false);
-    activeController.current?.abort();
-    activeController.current = null;
-  }, [pageSize, status]);
+  const posts = [...initialPosts, ...extraPosts];
 
   useEffect(() => {
     if (!hasMore || isLoading) return;
@@ -58,20 +48,21 @@ export default function ReviewInfiniteList({
           { signal: controller.signal },
         )
           .then((res) => res.json())
-          .then((data: PostItemProps[]) => {
+          .then((data: MyPost[]) => {
             if (requestId !== activeRequestId.current) return;
             if (!Array.isArray(data) || data.length === 0) {
               setHasMore(false);
               return;
             }
-            // setPosts((prev) => [...prev, ...data]);
+            setExtraPosts((prev) => [...prev, ...data]);
             setPage(nextPage);
             if (data.length < pageSize) {
               setHasMore(false);
             }
           })
-          .catch(() => {
+          .catch((error: unknown) => {
             if (requestId !== activeRequestId.current) return;
+            if (error instanceof Error && error.name === "AbortError") return;
             setHasMore(false);
           })
           .finally(() => {

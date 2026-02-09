@@ -17,18 +17,12 @@ export default function MyPostInfiniteList({
   rootRef?: RefObject<HTMLElement | null>;
   onDelete: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
 }) {
-  const [posts, setPosts] = useState<MyPost[]>(initialPosts);
+  const [extraPosts, setExtraPosts] = useState<MyPost[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialPosts.length >= pageSize);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    setPosts(initialPosts);
-    setPage(1);
-    setHasMore(initialPosts.length >= pageSize);
-    setIsLoading(false);
-  }, [initialPosts, pageSize]);
+  const posts = [...initialPosts, ...extraPosts];
 
   useEffect(() => {
     if (!hasMore || isLoading) return;
@@ -47,7 +41,7 @@ export default function MyPostInfiniteList({
               setHasMore(false);
               return;
             }
-            setPosts((prev) => [...prev, ...data]);
+            setExtraPosts((prev) => [...prev, ...data]);
             setPage(nextPage);
             if (data.length < pageSize) {
               setHasMore(false);

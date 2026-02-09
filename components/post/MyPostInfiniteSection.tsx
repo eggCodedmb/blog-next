@@ -22,6 +22,7 @@ export default function MyPostInfiniteSection({
     <ScrollArea.Root className="h-full w-full overflow-hidden">
       <ScrollArea.Viewport ref={viewportRef} className="h-full w-full pr-1">
         <MyPostInfiniteList
+          key={`${initialPosts[0]?.id ?? "empty"}-${initialPosts.length}-${pageSize}`}
           initialPosts={initialPosts}
           pageSize={pageSize}
           rootRef={viewportRef}

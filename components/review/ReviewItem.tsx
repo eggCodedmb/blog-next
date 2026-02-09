@@ -48,7 +48,7 @@ export default function ReviewItem({
             <p className="text-sm text-muted line-clamp-3">{preview}...</p>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-2 lg:justify-end lg:min-w-[240px]">
+        <div className="flex flex-wrap items-center gap-2 lg:justify-end lg:min-w-60">
           <Link
             href={`/content/${post.id}`}
             className="btn btn-outline text-muted"
@@ -57,12 +57,20 @@ export default function ReviewItem({
           </Link>
           {status !== "1" && (
             <>
-              <form action={approveAction}>
+              <form
+                action={async (formData) => {
+                  await approveAction(formData);
+                }}
+              >
                 <input type="hidden" name="id" value={post.id} />
                 <button className="btn btn-primary">通过</button>
               </form>
               {status !== "2" && (
-                <form action={rejectAction}>
+                <form
+                  action={async (formData) => {
+                    await rejectAction(formData);
+                  }}
+                >
                   <input type="hidden" name="id" value={post.id} />
                   <button className="btn btn-outline text-muted">拒绝</button>
                 </form>

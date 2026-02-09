@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextSelection } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";
-import type { ProseMirrorDoc } from "@/types/docs";
 
 interface ToCItemType {
   id: string;
@@ -45,7 +44,7 @@ const ToCEmptyState = () => {
 };
 
 interface ToCProps {
-  items: ProseMirrorDoc[];
+  items: Array<Omit<ToCItemType, "isActive" | "isScrolledOver">>;
   editor: Editor;
 }
 
