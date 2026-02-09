@@ -61,49 +61,42 @@ export async function getPostById(id: number) {
 }
 
 export async function getPostDetail(id: number, viewerId?: number) {
-  const include: Record<string, unknown> = {
-    author: {
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
+  return prisma.post.findUnique({
+    where: { id },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          avatar: true,
+        },
       },
-    },
-    comments: {
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
+      comments: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatar: true,
+            },
           },
         },
       },
-    },
-    _count: {
-      select: {
-        comments: true,
-        favorites: true,
+      _count: {
+        select: {
+          comments: true,
+          favorites: true,
+        },
+      },
+      favorites: {
+        where: { userId: viewerId ?? -1 },
+        select: { id: true },
       },
     },
-  };
-
-  if (viewerId) {
-    include.favorites = {
-      where: { userId: viewerId },
-      select: { id: true },
-    };
-  }
-
-  const post = await prisma.post.findUnique({
-    where: { id },
-    include,
   });
-
-  return post;
 }
 
 // 删除文章
