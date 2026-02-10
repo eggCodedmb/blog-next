@@ -3,11 +3,11 @@ import NavTab from "./NavTab";
 import Link from "next/link";
 import Image from "next/image";
 import AuthMenu from "@/components/auth/AuthMenu";
-import ThemeToggle from "@/components/theme/ThemeButton";
+// import ThemeToggle from "@/components/theme/ThemeButton";
 import SearchBox from "@/components/search/SearchBox";
 import MobileDrawer from "@/components/layout/MobileDrawer";
 import { getUser } from "@/lib/user/user.action";
-
+import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle";
 async function Header() {
   const user = await getUser();
   return (

@@ -1,9 +1,11 @@
 import { PostItemProps } from "@/types/post";
 import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
-import CommentSection, { CommentItem } from "@/components/comment/CommentSection";
+import CommentSection, {
+  CommentItem,
+} from "@/components/comment/CommentSection";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-
+import Editor from "@/components/tiptap/Editor";
 function Content({
   post,
   currentUserId,
@@ -30,7 +32,9 @@ function Content({
                   文章
                 </span>
                 <span>
-                  {post.createdAt ? new Date(post.createdAt).toLocaleString() : ""}
+                  {post.createdAt
+                    ? new Date(post.createdAt).toLocaleString()
+                    : ""}
                 </span>
               </div>
 
@@ -64,13 +68,9 @@ function Content({
               </div>
             </div>
 
-            <div className="my-6 h-px w-full bg(--border)" />
+            <div className="my-1.5 h-px w-full bg(--border)" />
 
-            <div
-              className="prose prose-slate dark:prose-invert max-w-none text-theme"
-              dangerouslySetInnerHTML={{ __html: post.content as string }}
-              suppressHydrationWarning={true}
-            ></div>
+            <Editor content={post.content as string} mode="post" />
 
             <CommentSection
               postId={post.id}
@@ -82,7 +82,10 @@ function Content({
             />
           </article>
         </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="vertical" className="w-2 hide-scrollbar">
+        <ScrollArea.Scrollbar
+          orientation="vertical"
+          className="w-2 hide-scrollbar"
+        >
           {/* <ScrollArea.Thumb className="bg-slate-400/60 dark:bg-slate-500/60 rounded-full" /> */}
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>

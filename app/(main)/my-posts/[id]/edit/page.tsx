@@ -61,7 +61,7 @@ export default async function EditMyPostPage({
   };
 
   return (
-    <div className="w-3xl">
+    <div className="w-full max-w-3xl">
       <FormPost
         onSubmit={handleSubmit}
         initialPost={{

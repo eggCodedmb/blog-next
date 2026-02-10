@@ -88,7 +88,7 @@ function FormPost({
   };
   // 校验
   return (
-    <div className="w-3xl rounded-md bg-card border border-theme card-glow">
+    <div className="w-full max-w-3xl rounded-md bg-card border border-theme card-glow">
       <Form.Root onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Form.Field name="title" className="mb-2 grid">
           <div className="flex items-baseline justify-end">

@@ -1,12 +1,14 @@
 import { getUser } from "@/lib/user/user.action";
 import { createPost } from "@/lib/post/post.action";
 import { CreatePostParams } from "@/lib/post/post.action";
-import FormPost from "@/components/FormPost";
+// import FormPost from "@/components/FormPost";
+
+import TiptapEdit from "@/components/tiptap/TiptapEdit";
+
 function CreatePostPage() {
   const handleSubmit = async (values: CreatePostParams) => {
     "use server";
     const user = await getUser();
-
     if (!user) {
       return { success: false, message: "未登录" };
     }
@@ -21,9 +23,10 @@ function CreatePostPage() {
   };
 
   return (
-    <div className="w-3xl">
+    <div className="w-full justify-center items-center">
       {/* <Editor /> */}
-      <FormPost onSubmit={handleSubmit} />
+      {/* <FormPost onSubmit={handleSubmit} /> */}
+      <TiptapEdit />
     </div>
   );
 }
