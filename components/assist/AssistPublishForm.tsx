@@ -29,16 +29,18 @@ export default function AssistPublishForm({
   onCreated,
   onCancel,
 }: AssistPublishFormProps) {
-  const [taskName, setTaskName] = useState<(typeof ASSIST_TASK_OPTIONS)[number]>(
-    ASSIST_TASK_OPTIONS[0],
-  );
+  const [taskName, setTaskName] = useState<
+    (typeof ASSIST_TASK_OPTIONS)[number]
+  >(ASSIST_TASK_OPTIONS[0]);
   const [contentType, setContentType] = useState<AssistContentType>("token");
   const [token, setToken] = useState("");
   const [image, setImage] = useState("");
   const [uploadError, setUploadError] = useState("");
 
   const isSubmitDisabled =
-    contentType === "token" ? token.trim().length === 0 : image.trim().length === 0;
+    contentType === "token"
+      ? token.trim().length === 0
+      : image.trim().length === 0;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -203,7 +205,9 @@ export default function AssistPublishForm({
             <p className="text-xs text-muted">请先上传图片，再发布助力。</p>
           )}
 
-          {uploadError ? <p className="text-xs text-red-500">{uploadError}</p> : null}
+          {uploadError ? (
+            <p className="text-xs text-red-500">{uploadError}</p>
+          ) : null}
         </div>
       )}
 
@@ -213,7 +217,11 @@ export default function AssistPublishForm({
             取消
           </button>
         ) : null}
-        <button type="submit" className="btn btn-primary" disabled={isSubmitDisabled}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={isSubmitDisabled}
+        >
           发布助力
         </button>
       </div>
