@@ -3,7 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Home, User, Info, FileText, ShieldCheck } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  User,
+  Info,
+  FileText,
+  ShieldCheck,
+  HandHelping,
+} from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 import SearchBox from "@/components/search/SearchBox";
 
@@ -11,6 +20,7 @@ const ICONS: Record<string, React.ElementType> = {
   "/": Home,
   "/profile": User,
   "/my-posts": FileText,
+  "/assist": HandHelping,
   "/about": Info,
   "/review": ShieldCheck,
 };
@@ -43,7 +53,7 @@ export default function MobileDrawer({ isAdmin }: { isAdmin: boolean }) {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-0 h-full w-[18.5rem] max-w-[88vw] bg-card border-r border-theme p-5">
+          <div className="absolute left-0 top-0 h-full w-74 max-w-[88vw] bg-card border-r border-theme p-5">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted">导航</p>
               <button

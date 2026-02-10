@@ -2,7 +2,14 @@
 import Link from "next/link";
 import { NAV_LINKS } from "@/constants";
 import { usePathname } from "next/navigation";
-import { Home, User, Info, FileText, ShieldCheck } from "lucide-react";
+import {
+  Home,
+  User,
+  Info,
+  FileText,
+  ShieldCheck,
+  HandHelping,
+} from "lucide-react";
 // import Image from "next/image";
 function NavTab({ isAdmin }: { isAdmin: boolean }) {
   const isActive = usePathname();
@@ -21,6 +28,7 @@ function NavTab({ isAdmin }: { isAdmin: boolean }) {
     "/": Home,
     "/profile": User,
     "/my-posts": FileText,
+    "/assist": HandHelping,
     "/about": Info,
     "/review": ShieldCheck,
   };

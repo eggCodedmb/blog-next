@@ -15,6 +15,11 @@ export const NAV_LINKS = [
     icon: "/assets/user.svg",
   },
   {
+    href: "/assist",
+    label: "助力",
+    icon: "/assets/home.svg",
+  },
+  {
     href: "/about",
     label: "关于",
     icon: "/assets/about.svg",
