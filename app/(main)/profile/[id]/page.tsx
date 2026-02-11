@@ -1,8 +1,6 @@
 import UserCard from "@/components/user/UserCard";
 import { userById } from "@/lib/user/user.action";
 import { getPostByAuthorId } from "@/lib/post/post.action";
-// import { use } from "react";
-// import PostCard from "@/components/post/PostCard";
 import PostList from "@/components/post/PostList";
 
 async function ProfilePage({ params }: { params: { id: string } }) {

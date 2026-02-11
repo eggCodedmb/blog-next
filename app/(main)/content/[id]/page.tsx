@@ -3,7 +3,6 @@ import { getPostDetail } from "@/lib/post/post.action";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/user/user.action";
 
-
 interface ContentPageProps {
   params: Promise<{ id: string }>;
 }
@@ -28,15 +27,13 @@ export default async function ContentPage({ params }: ContentPageProps) {
 
   // 5. 将解析后的数据传递给子组件
   return (
-    <div>
-      <Content
-        post={post}
-        currentUserId={user?.id || null}
-        comments={post.comments || []}
-        commentCount={post._count?.comments || 0}
-        favoriteCount={post._count?.favorites || 0}
-        favorited={(post.favorites?.length || 0) > 0}
-      />
-    </div>
+    <Content
+      post={post}
+      currentUserId={user?.id || null}
+      comments={post.comments || []}
+      commentCount={post._count?.comments || 0}
+      favoriteCount={post._count?.favorites || 0}
+      favorited={(post.favorites?.length || 0) > 0}
+    />
   );
 }

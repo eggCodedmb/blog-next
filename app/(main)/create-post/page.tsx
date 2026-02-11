@@ -1,11 +1,10 @@
 import { getUser } from "@/lib/user/user.action";
 import { createPost } from "@/lib/post/post.action";
 import { CreatePostParams } from "@/lib/post/post.action";
-// import FormPost from "@/components/FormPost";
-
 import TiptapEdit from "@/components/tiptap/TiptapEdit";
 
 function CreatePostPage() {
+  
   const handleSubmit = async (values: CreatePostParams) => {
     "use server";
     const user = await getUser();
@@ -26,7 +25,7 @@ function CreatePostPage() {
     <div className="w-full justify-center items-center">
       {/* <Editor /> */}
       {/* <FormPost onSubmit={handleSubmit} /> */}
-      <TiptapEdit />
+      <TiptapEdit submit={handleSubmit} />
     </div>
   );
 }

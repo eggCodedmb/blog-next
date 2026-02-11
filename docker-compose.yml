@@ -1,0 +1,13 @@
+services:
+  blog-next:
+    container_name: blog-next
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: blog-next:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production
+    restart: unless-stopped
+

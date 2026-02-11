@@ -9,6 +9,7 @@ export default function ConfirmDialog({
   onConfirm,
   onCancel,
   loading = false,
+  children,
 }: {
   open: boolean;
   title?: string;
@@ -18,6 +19,7 @@ export default function ConfirmDialog({
   onConfirm: () => void;
   onCancel: () => void;
   loading?: boolean;
+  children?: React.ReactNode;
 }) {
   if (!open) return null;
 
@@ -32,6 +34,7 @@ export default function ConfirmDialog({
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-theme bg-card p-6 shadow-xl">
         <h3 className="text-lg font-semibold text-theme">{title}</h3>
         <p className="mt-2 text-sm text-muted">{description}</p>
+        {children ? <div className="mt-4">{children}</div> : null}
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"

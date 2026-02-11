@@ -1,6 +1,12 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import type { JSONContent } from "@tiptap/core";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 
@@ -59,7 +65,7 @@ import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon";
 import { LinkIcon } from "@/components/tiptap-icons/link-icon";
-import { RiSendPlaneLine } from "@/components/tiptap-icons/ri-send-plane-line"
+import { RiSendPlaneLine } from "@/components/tiptap-icons/ri-send-plane-line";
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint";
@@ -81,14 +87,11 @@ const MainToolbarContent = ({
   onHighlighterClick,
   onLinkClick,
   isMobile,
-  // onSubmit=null
 }: {
   onHighlighterClick: () => void;
   onLinkClick: () => void;
   isMobile: boolean;
-  onSubmit?:(e:React.MouseEventHandler<HTMLDivElement>,ref:SimpleEditorRef)=>void
 }) => {
- 
   return (
     <>
       <Spacer />
@@ -136,7 +139,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <TextAlignButton align="left"  />
+        <TextAlignButton align="left" />
         <TextAlignButton align="center" />
         <TextAlignButton align="right" />
         <TextAlignButton align="justify" />
@@ -145,7 +148,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton/>
+        <ImageUploadButton />
       </ToolbarGroup>
 
       <Spacer />
@@ -153,8 +156,10 @@ const MainToolbarContent = ({
       {isMobile && <ToolbarSeparator />}
 
       <ToolbarGroup>
-        <RiSendPlaneLine />提交
-        {/* <ThemeToggle /> */}
+        <button type="submit" className="flex items-center">
+          <RiSendPlaneLine className="tiptap-button-icon" width={20} hanging={20} />
+          <span className="tiptap-button-text">提交</span>
+        </button>
       </ToolbarGroup>
     </>
   );
@@ -280,7 +285,7 @@ export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
           style={{
             ...(isMobile
               ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
+                  bottom: `calc(100% - ${height - rect.y - 64}px)`,
                 }
               : {}),
           }}

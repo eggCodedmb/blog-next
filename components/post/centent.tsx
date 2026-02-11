@@ -3,7 +3,7 @@ import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
 import CommentSection, { CommentItem } from "@/components/comment/CommentSection";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import Editor from "@/components/tiptap/Editor";
+import ArticleContentPreview from "@/components/post/ArticleContentPreview"
 
 function Content({
   post,
@@ -69,8 +69,8 @@ function Content({
 
                 <div className="my-4 h-px w-full bg-(--border)" />
 
-                <Editor content={post.content as string} mode="post" />
-
+                {/* <Editor content={post.content as string} mode="post" /> */}
+                <ArticleContentPreview html={post.content} />
                 <CommentSection
                   postId={post.id}
                   currentUserId={currentUserId}

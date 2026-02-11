@@ -4,6 +4,8 @@ import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
 
 export default function PostCard({ post }: { post: PostItemProps }) {
+  console.log(post);
+  
   const preview = (post.content || "")
     .replace(/<[^>]*>/g, "")
     .replace(/\s+/g, " ")

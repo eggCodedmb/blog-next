@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: "standalone",
+  typescript: {
+    // ignoreBuildErrors: true,
+  },
   images: {
     // Restrict remote images to known hosts/protocols
     remotePatterns: [

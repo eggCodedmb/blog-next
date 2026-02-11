@@ -1,0 +1,11 @@
+.git
+.gitignore
+.next
+.vercel
+node_modules
+pnpm-debug.log
+npm-debug.log
+yarn-error.log
+README.md
+.vscode
+*.tsbuildinfo

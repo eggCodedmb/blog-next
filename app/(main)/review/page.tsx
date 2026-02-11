@@ -77,7 +77,7 @@ export default async function ReviewPage({
   };
 
   return (
-    <div className="w-full h-[calc(100vh-64px)] px-4 py-6 overflow-hidden flex flex-col">
+    <div className="w-full max-w-5xl h-[calc(100vh-64px)] px-4 py-6 overflow-hidden flex flex-col">
       <div className="relative overflow-hidden rounded-2xl border border-theme bg-card p-6 sm:p-8 card-glow">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--primary)_16%,transparent),transparent_55%)]" />
         <div className="relative flex flex-wrap items-center justify-between gap-6">

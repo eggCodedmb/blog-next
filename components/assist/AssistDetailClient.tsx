@@ -88,11 +88,19 @@ export default function AssistDetailClient({ id }: AssistDetailClientProps) {
             </p>
           </div>
           {item.contentType === "token" ? (
-            <button type="button" className="btn btn-primary" onClick={handleCopy}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleCopy}
+            >
               {actionDone ? "已复制" : "复制"}
             </button>
           ) : (
-            <button type="button" className="btn btn-primary" onClick={handleDownload}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleDownload}
+            >
               {actionDone ? "已下载" : "下载"}
             </button>
           )}

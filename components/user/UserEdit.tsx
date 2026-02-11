@@ -52,7 +52,7 @@ function UserEdit({ id, email, name, avatar, isAdmin }: UserEditProps) {
   };
   return (
     <div className="w-full px-4 sm:px-0">
-      <section className="mx-auto w-full max-w-4xl bg-card border border-theme rounded-2xl p-4 sm:p-8 card-glow">
+      <section className="w-full bg-card border border-theme p-4 sm:p-8 card-glow">
         <div className="flex flex-col gap-5 sm:gap-6">
           <div className="flex flex-wrap items-center gap-2">
           <p className="text-sm font-semibold text-theme">个人信息</p>

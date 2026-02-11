@@ -1,5 +1,6 @@
 import Link from "next/link";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import { getUser } from "@/lib/user/user.action";
 import {
   Sparkles,
   Telescope,
@@ -8,6 +9,7 @@ import {
   Feather,
   Rocket,
 } from "lucide-react";
+import { use } from "react";
 
 const VALUES = [
   {
@@ -46,6 +48,20 @@ const MILESTONES = [
 ];
 
 function About() {
+  const user = use(getUser());
+  let linkCop = null;
+  if (user) {
+    linkCop = (
+      <div className="flex flex-wrap items-center gap-3">
+        <Link href="/create-post" className="btn btn-primary">
+          开始创作
+        </Link>
+        <Link href="/my-posts" className="btn btn-outline text-muted">
+          查看我的帖子
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className="w-full h-[calc(100vh-64px)] px-4 py-6">
       <ScrollArea.Root className="h-full w-full overflow-hidden">
@@ -69,14 +85,7 @@ function About() {
                 <p className="text-sm sm:text-base text-muted max-w-2xl">
                   我们相信内容的价值来自长期积累。这里既有简洁的写作工具，也有克制的社区机制，帮你沉淀观点、连接同好、持续输出。
                 </p>
-                <div className="flex flex-wrap items-center gap-3">
-                  <Link href="/create-post" className="btn btn-primary">
-                    开始创作
-                  </Link>
-                  <Link href="/my-posts" className="btn btn-outline text-muted">
-                    查看我的帖子
-                  </Link>
-                </div>
+                {user && linkCop}
               </div>
             </section>
 
@@ -88,7 +97,9 @@ function About() {
               </div>
               <div className="rounded-2xl border border-theme bg-card p-5 card-glow">
                 <p className="text-xs text-muted">内容沉淀</p>
-                <p className="mt-2 text-2xl font-semibold text-theme">18,000+</p>
+                <p className="mt-2 text-2xl font-semibold text-theme">
+                  18,000+
+                </p>
                 <p className="mt-1 text-xs text-muted">被收藏与引用的文章</p>
               </div>
               <div className="rounded-2xl border border-theme bg-card p-5 card-glow">
@@ -173,7 +184,10 @@ function About() {
             </section>
           </div>
         </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="vertical" className="hidden sm:block w-2">
+        <ScrollArea.Scrollbar
+          orientation="vertical"
+          className="hidden sm:block w-2"
+        >
           <ScrollArea.Thumb className="bg-slate-400/60 dark:bg-slate-500/60 rounded-full" />
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>

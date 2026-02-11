@@ -133,6 +133,12 @@ export async function getPostByAuthorId(id: number, data: PageParams) {
           avatar: true,
         },
       },
+      _count: {
+        select: {
+          comments: true,
+          favorites: true,
+        },
+      },
     },
   });
   return posts;
@@ -181,9 +187,7 @@ export async function getReviewPosts(
   return posts;
 }
 
-export async function getReviewCount(
-  status: "0" | "1" | "2",
-) {
+export async function getReviewCount(status: "0" | "1" | "2") {
   return prisma.post.count({
     where: { published: status },
   });

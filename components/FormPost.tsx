@@ -1,5 +1,5 @@
 "use client";
-import Editor from "@/components/tiptap/Editor";
+// import Editor from "@/components/tiptap/Editor";
 import * as Form from "@radix-ui/react-form";
 import { useState, useTransition } from "react";
 import { CreatePostParams } from "@/lib/post/post.action";
@@ -12,7 +12,7 @@ function FormPost({
   initialPost,
   submitLabel = "发布",
   redirectTo = "/",
-  cache = true,
+  // cache = true,
 }: {
   onSubmit: (
     post: CreatePostParams,
@@ -122,11 +122,11 @@ function FormPost({
               内容不能为空
             </Form.Message>
           </div>
-          <Editor
+          {/* <Editor
             content={post.content as string}
             onChange={(html) => setPost({ ...post, content: html.trim() })}
             cache={cache}
-          />
+          /> */}
           <Form.Control asChild>
             <textarea
               required

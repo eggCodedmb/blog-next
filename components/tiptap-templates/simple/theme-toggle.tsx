@@ -6,7 +6,6 @@ import { Button } from "@/components/tiptap-ui-primitive/button";
 // --- Icons ---
 import { MoonStarIcon } from "@/components/tiptap-icons/moon-star-icon";
 import { SunIcon } from "@/components/tiptap-icons/sun-icon";
-import {RiSendPlaneLine} from "@/components/tiptap-icons/"
 import { useEffect, useState } from "react";
 import { save, load } from "@/lib/utils";
 export function ThemeToggle() {
