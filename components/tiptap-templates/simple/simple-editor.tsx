@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChangeEvent,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -85,12 +86,16 @@ import content from "@/components/tiptap-templates/simple/data/content.json";
 
 const MainToolbarContent = ({
   onHighlighterClick,
+  onImageClick,
   onLinkClick,
   isMobile,
+  isImageUploading,
 }: {
   onHighlighterClick: () => void;
+  onImageClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onLinkClick: () => void;
   isMobile: boolean;
+  isImageUploading: boolean;
 }) => {
   return (
     <>
@@ -148,7 +153,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton />
+        <ImageUploadButton onClick={onImageClick} disabled={isImageUploading} />
       </ToolbarGroup>
 
       <Spacer />
@@ -204,9 +209,11 @@ export interface SimpleEditorRef {
 export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
   const isMobile = useIsBreakpoint();
   const { height } = useWindowSize();
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main",
   );
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
@@ -277,6 +284,30 @@ export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
     }
   }, [isMobile, mobileView]);
 
+  const handleToolbarImageClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (isImageUploading) return;
+    imageInputRef.current?.click();
+  };
+
+  const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file || !editor) return;
+
+    try {
+      setIsImageUploading(true);
+      const url = await handleImageUpload(file);
+      const fileName = file.name.replace(/\.[^/.]+$/, "") || "image";
+      editor.chain().focus().setImage({ src: url, alt: fileName, title: fileName }).run();
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setIsImageUploading(false);
+    }
+  };
+
   return (
     <div className="simple-editor-wrapper">
       <EditorContext.Provider value={{ editor }}>
@@ -293,8 +324,10 @@ export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
           {mobileView === "main" ? (
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
+              onImageClick={handleToolbarImageClick}
               onLinkClick={() => setMobileView("link")}
               isMobile={isMobile}
+              isImageUploading={isImageUploading}
             />
           ) : (
             <MobileToolbarContent
@@ -308,6 +341,15 @@ export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
           editor={editor}
           role="presentation"
           className="simple-editor-content"
+        />
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageInputChange}
+          tabIndex={-1}
+          aria-hidden="true"
         />
       </EditorContext.Provider>
     </div>

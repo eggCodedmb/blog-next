@@ -15,7 +15,7 @@ export default function PostInfiniteSection({
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="h-auto sm:h-[calc(100vh-170px)]">
+    <div className="h-auto sm:h-[calc(100vh-110px)]">
       <ScrollArea.Root className="h-full w-full sm:overflow-hidden">
         <ScrollArea.Viewport
           ref={viewportRef}

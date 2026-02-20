@@ -40,8 +40,8 @@ export default async function MyPostsPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl px-4 py-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-6">
+    <div className="w-full max-w-5xl pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-theme">我的帖子</h1>
           <p className="text-sm text-muted mt-1">包含已发布、待审与拒绝</p>
@@ -51,7 +51,7 @@ export default async function MyPostsPage() {
         </Link>
       </div>
 
-      <div className="h-[calc(100vh-220px)]">
+      <div className="h-[calc(100vh-144px)]">
         <MyPostInfiniteSection
           initialPosts={posts}
           pageSize={pageSize}
