@@ -2,18 +2,23 @@ import { getUser } from "@/lib/user/user.action";
 import { createPost } from "@/lib/post/post.action";
 import { CreatePostParams } from "@/lib/post/post.action";
 import TiptapEdit from "@/components/tiptap/TiptapEdit";
+import { redirect } from "next/navigation";
 
-function CreatePostPage() {
-  
+async function CreatePostPage() {
+  const user = await getUser();
+  if (!user) {
+    redirect("/login");
+  }
+
   const handleSubmit = async (values: CreatePostParams) => {
     "use server";
-    const user = await getUser();
-    if (!user) {
+    const currentUser = await getUser();
+    if (!currentUser) {
       return { success: false, message: "未登录" };
     }
     const post = await createPost({
       ...values,
-      authorId: user.id,
+      authorId: currentUser.id,
     });
     if (!post) {
       return { success: false, message: "创建失败" };

@@ -4,7 +4,8 @@ import {
   updatePost,
   CreatePostParams,
 } from "@/lib/post/post.action";
-import FormPost from "@/components/FormPost";
+import TiptapEdit from "@/components/tiptap/TiptapEdit";
+import { redirect } from "next/navigation";
 
 export default async function EditMyPostPage({
   params,
@@ -15,11 +16,7 @@ export default async function EditMyPostPage({
   const postId = await params;
 
   if (!user) {
-    return (
-      <div className="w-full max-w-4xl px-4 py-16 text-center text-muted">
-        请先登录后编辑帖子
-      </div>
-    );
+    redirect("/login");
   }
 
   const id = Number(postId.id);
@@ -61,9 +58,9 @@ export default async function EditMyPostPage({
   };
 
   return (
-    <div className="w-full max-w-3xl">
-      <FormPost
-        onSubmit={handleSubmit}
+    <div className="w-full justify-center items-center">
+      <TiptapEdit
+        submit={handleSubmit}
         initialPost={{
           title: post.title,
           content: post.content,
@@ -73,7 +70,6 @@ export default async function EditMyPostPage({
         }}
         submitLabel="保存"
         redirectTo="/my-posts"
-        cache={false}
       />
     </div>
   );

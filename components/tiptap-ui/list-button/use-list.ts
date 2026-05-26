@@ -189,6 +189,9 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
 
     // Handle NodeSelection
     if (selection instanceof NodeSelection) {
+      const shouldClearNode = !["paragraph", "heading"].includes(
+        selection.node.type.name
+      )
       const firstChild = selection.node.firstChild?.firstChild
       const lastChild = selection.node.lastChild?.lastChild
 
@@ -205,7 +208,10 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
 
       chain = chain
         .setTextSelection(TextSelection.between(resolvedFrom, resolvedTo))
-        .clearNodes()
+
+      if (shouldClearNode) {
+        chain = chain.clearNodes()
+      }
     }
 
     if (editor.isActive(type)) {

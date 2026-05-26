@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import type { CreatePostParams } from "@/lib/post/post.action";
 import {
   SimpleEditor,
@@ -14,15 +14,21 @@ interface TiptapEditProps {
   submit: (
     payload: CreatePostParams,
   ) => Promise<{ success: boolean; message?: string }>;
-
+  initialPost?: Partial<CreatePostParams>;
+  submitLabel?: string;
   redirectTo?: string;
 }
 
-function TiptapEdit({ submit, redirectTo = "/" }: TiptapEditProps) {
+function TiptapEdit({
+  submit,
+  initialPost,
+  submitLabel = "发布",
+  redirectTo = "/",
+}: TiptapEditProps) {
   const editorRef = useRef<SimpleEditorRef>(null);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [title, setTitle] = useState("");
-  const [cover, setCover] = useState("");
+  const [title, setTitle] = useState(initialPost?.title ?? "");
+  const [cover, setCover] = useState(initialPost?.cover ?? "");
   const [isPending, setIsPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -31,7 +37,7 @@ function TiptapEdit({ submit, redirectTo = "/" }: TiptapEditProps) {
   );
   const router = useRouter();
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isPending) return;
     setOpenConfirm(true);
@@ -65,30 +71,30 @@ function TiptapEdit({ submit, redirectTo = "/" }: TiptapEditProps) {
     setIsPending(true);
     try {
       const res = await submit({
-        authorId: 0,
+        authorId: initialPost?.authorId ?? 0,
         title: trimmedTitle,
         cover: cover.trim(),
         content: html,
-        published: "0",
+        published: initialPost?.published ?? "0",
       });
 
       if (res.success) {
         setToastVariant("success");
-        setToastMessage(res.message || "发布成功");
+        setToastMessage(res.message || `${submitLabel}成功`);
         setOpenConfirm(false);
         window.setTimeout(() => {
           router.replace(redirectTo);
-          // router.refresh();
+          router.refresh();
         }, 300);
       } else {
         setToastVariant("error");
-        setToastMessage(res.message || "发布失败");
+        setToastMessage(res.message || `${submitLabel}失败`);
       }
       setToastOpen(true);
     } catch (error) {
       setToastVariant("error");
       setToastMessage(
-        error instanceof Error ? error.message : "发布失败，请稍后重试",
+        error instanceof Error ? error.message : `${submitLabel}失败，请稍后重试`,
       );
       setToastOpen(true);
     } finally {
@@ -99,14 +105,18 @@ function TiptapEdit({ submit, redirectTo = "/" }: TiptapEditProps) {
   return (
     <>
       <form onSubmit={onSubmit}>
-        <SimpleEditor ref={editorRef} />
+        <SimpleEditor
+          ref={editorRef}
+          initialContent={initialPost?.content || undefined}
+          submitLabel={submitLabel}
+        />
       </form>
 
       <ConfirmDialog
         open={openConfirm}
-        title="确认发布"
-        description="请补充标题和封面后确认发布。"
-        confirmText="发布"
+        title={`确认${submitLabel}`}
+        description={`请补充标题和封面后确认${submitLabel}。`}
+        confirmText={submitLabel}
         cancelText="取消"
         onConfirm={confirmSubmit}
         onCancel={() => setOpenConfirm(false)}

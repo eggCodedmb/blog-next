@@ -57,19 +57,6 @@ body {
   min-height: 100vh;
 }
 
-/* 呼吸光晕动画 */
-@keyframes breathe {
-  0% {
-    box-shadow: 0 0 0px var(--glow);
-  }
-  50% {
-    box-shadow: 0 0 28px var(--glow);
-  }
-  100% {
-    box-shadow: 0 0 0px var(--glow);
-  }
-}
-
 @layer utilities {
   .bg-theme {
     background: var(--bg);
@@ -133,11 +120,6 @@ body {
     padding: 0;
   }
 
-  /* 暗黑呼吸卡片 */
-  .dark .card-glow {
-    animation: breathe 4s ease-in-out infinite;
-  }
-
   .dmb-btn-primary {
     background-color: var(--color-primary);
     @apply px-4 py-2 rounded-md font-medium text-white transition-colors duration-200;
@@ -199,11 +181,5 @@ body {
   }
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dark .card-glow {
-    animation: none;
   }
 }

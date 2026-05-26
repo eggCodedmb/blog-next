@@ -1,0 +1,123 @@
+
+> blog-next@0.1.0 dev E:\Code\blog-next
+> next dev --webpack
+
+▲ Next.js 16.1.6 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://198.18.0.1:3000
+- Environments: .env
+
+✓ Starting...
+✓ Ready in 2.6s
+○ Compiling / ...
+ GET / 200 in 8.4s (compile: 4.3s, render: 4.2s)
+ GET / 200 in 1065ms (compile: 6ms, render: 1058ms)
+ GET /api/posts?page=1&pageSize=10 200 in 2.1s (compile: 1090ms, render: 973ms)
+ GET / 200 in 3.9s (compile: 48ms, render: 3.8s)
+ GET / 200 in 3.9s (compile: 50ms, render: 3.8s)
+ GET /content/51 200 in 4.2s (compile: 2.5s, render: 1765ms)
+ GET /content/37 200 in 288ms (compile: 30ms, render: 258ms)
+ GET / 200 in 5.2s (compile: 17ms, render: 5.2s)
+ GET / 200 in 1019ms (compile: 4ms, render: 1015ms)
+ GET /login 200 in 1280ms (compile: 1216ms, render: 65ms)
+ GET /login 200 in 137ms (compile: 3ms, render: 134ms)
+ GET / 200 in 1050ms (compile: 14ms, render: 1036ms)
+ GET / 200 in 1042ms (compile: 3ms, render: 1039ms)
+ GET /content/37 200 in 4.7s (compile: 41ms, render: 4.7s)
+ GET /content/37 200 in 4.3s (compile: 28ms, render: 4.2s)
+ GET /profile 200 in 1748ms (compile: 1658ms, render: 90ms)
+ GET /login 200 in 761ms (compile: 670ms, render: 91ms)
+ GET /login 200 in 147ms (compile: 3ms, render: 144ms)
+ GET / 200 in 975ms (compile: 14ms, render: 961ms)
+ POST /login 200 in 3.3s (compile: 4ms, render: 3.3s)
+ GET / 200 in 3.7s (compile: 3ms, render: 3.7s)
+ GET / 200 in 3.8s (compile: 2ms, render: 3.8s)
+ GET / 200 in 4.2s (compile: 4ms, render: 4.2s)
+ GET /my-posts 200 in 2.4s (compile: 886ms, render: 1536ms)
+ GET /content/58 200 in 4.8s (compile: 42ms, render: 4.7s)
+ GET /profile/5 200 in 8.1s (compile: 2.7s, render: 5.4s)
+ GET / 200 in 4.0s (compile: 14ms, render: 4.0s)
+ GET /profile 200 in 1326ms (compile: 726ms, render: 599ms)
+ GET /api/uploadthing 200 in 3.1s (compile: 3.1s, render: 75ms)
+ GET /api/uploadthing 200 in 9ms (compile: 3ms, render: 6ms)
+ GET /my-posts 200 in 4.1s (compile: 2.4s, render: 1712ms)
+ GET /create-post 200 in 2.7s (compile: 2.2s, render: 531ms)
+ GET /api/uploadthing 200 in 301ms (compile: 262ms, render: 39ms)
+ GET /api/uploadthing 200 in 8ms (compile: 1716µs, render: 6ms)
+ GET /api/uploadthing 200 in 9ms (compile: 1764µs, render: 7ms)
+ GET /api/uploadthing 200 in 9ms (compile: 2ms, render: 7ms)
+Request {
+  method: 'POST',
+  url: 'http://localhost:3000/api/uploadthing?actionType=upload&slug=imageUploader',
+  headers: Headers {
+    host: 'localhost:3000',
+    connection: 'keep-alive',
+    'content-length': '97',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-ch-ua': '"Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'x-uploadthing-package': '@uploadthing/react',
+    traceparent: '00-f1344ce5a891ae68ac2cfe38c048c4bb-8e5bf7f96ca20435-01',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
+    'x-uploadthing-version': '7.7.4',
+    'content-type': 'application/json',
+    b3: 'f1344ce5a891ae68ac2cfe38c048c4bb-8e5bf7f96ca20435-01',
+    accept: '*/*',
+    origin: 'http://localhost:3000',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    referer: 'http://localhost:3000/create-post',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept-language': 'zh-CN,zh;q=0.9',
+    cookie: '__next_hmr_refresh_hash__=4de4579717fe1ec4eecc150e13155a1d633457081244afec; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJtaHQyNTU0NzQzNDhAcXEuY29tIiwiaWF0IjoxNzc5Nzg1NzUwLCJleHAiOjE3ODAzOTA1NTB9.o365tuRvlJqpNudl4BHIdjSaO8XucCpexDlZWcZaVnE',
+    'x-forwarded-host': 'localhost:3000',
+    'x-forwarded-port': '3000',
+    'x-forwarded-proto': 'http',
+    'x-forwarded-for': '::1'
+  },
+  destination: '',
+  referrer: 'about:client',
+  referrerPolicy: '',
+  mode: 'cors',
+  credentials: 'same-origin',
+  cache: 'default',
+  redirect: 'follow',
+  integrity: '',
+  keepalive: false,
+  isReloadNavigation: false,
+  isHistoryNavigation: false,
+  signal: AbortSignal { aborted: false }
+}
+[16:59:01.152] INFO (#42) handleUploadAction=3499ms: Sending presigned URLs to client
+  presignedUrls: [
+    {
+      url: 'https://sea1.ingest.uploadthing.com/MLnyMTI1vcYQwOOb46g5emN7rHKiS6U4ZVEqCQu5y2xaoMg3?expires=1779789541147&x-ut-identifier=78g2goxcfc&x-ut-file-name=%25E4%25B8%258B%25E8%25BD%25BD%2520%281%29.png&x-ut-file-size=4101&x-ut-file-type=image%252Fpng&x-ut-slug=imageUploader&x-ut-content-disposition=inline&signature=hmac-sha256%3D9ca3de1249446d4ae9cec1fc88cccf5e77dc248e61d5c8ef46e7acc92e5add9c',
+      key: 'MLnyMTI1vcYQwOOb46g5emN7rHKiS6U4ZVEqCQu5y2xaoMg3',
+      name: '下载 (1).png',
+      customId: null
+    }
+  ]
+ POST /api/uploadthing?actionType=upload&slug=imageUploader 200 in 3.5s (compile: 2ms, render: 3.5s)
+userId: 5
+file url https://78g2goxcfc.ufs.sh/f/MLnyMTI1vcYQwOOb46g5emN7rHKiS6U4ZVEqCQu5y2xaoMg3
+ POST /api/uploadthing?slug=imageUploader 200 in 17ms (compile: 2ms, render: 15ms)
+[16:59:03.173] INFO (#52) handleCallbackRequest=237ms: Sent callback result to UploadThing
+ GET /api/uploadthing 200 in 11ms (compile: 2ms, render: 9ms)
+ GET /api/uploadthing 200 in 7ms (compile: 1845µs, render: 6ms)
+ POST /create-post 200 in 3.7s (compile: 3ms, render: 3.7s)
+ GET / 200 in 945ms (compile: 13ms, render: 932ms)
+ GET / 200 in 3.7s (compile: 3ms, render: 3.7s)
+ GET /login 200 in 33ms (compile: 11ms, render: 21ms)
+ GET /login 200 in 189ms (compile: 2ms, render: 187ms)
+ GET /login 200 in 171ms (compile: 8ms, render: 163ms)
+ POST / 200 in 293ms (compile: 2ms, render: 291ms)
+ GET / 200 in 992ms (compile: 3ms, render: 990ms)
+ POST /login 200 in 3.2s (compile: 3ms, render: 3.2s)
+ GET / 200 in 3.7s (compile: 4ms, render: 3.7s)
+ GET / 200 in 4.9s (compile: 3ms, render: 4.9s)
+ GET / 200 in 4.9s (compile: 4ms, render: 4.9s)
+ GET /review 200 in 3.6s (compile: 2.0s, render: 1538ms)
+ POST /review 200 in 5.0s (compile: 3ms, render: 5.0s)
+ POST /review 200 in 2.4s (compile: 2ms, render: 2.4s)
+ GET / 200 in 1319ms (compile: 9ms, render: 1310ms)

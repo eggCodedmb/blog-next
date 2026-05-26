@@ -13,7 +13,7 @@ import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
 import { Image } from "@tiptap/extension-image";
-import { TaskItem, TaskList } from "@tiptap/extension-list";
+import { ListItem, TaskItem, TaskList } from "@tiptap/extension-list";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { Highlight } from "@tiptap/extension-highlight";
@@ -83,14 +83,20 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 import content from "@/components/tiptap-templates/simple/data/content.json";
 
+const HeadingListItem = ListItem.extend({
+  content: "(paragraph | heading) block*",
+});
+
 const MainToolbarContent = ({
   onHighlighterClick,
   onLinkClick,
   isMobile,
+  submitLabel,
 }: {
   onHighlighterClick: () => void;
   onLinkClick: () => void;
   isMobile: boolean;
+  submitLabel: string;
 }) => {
   return (
     <>
@@ -156,10 +162,10 @@ const MainToolbarContent = ({
       {isMobile && <ToolbarSeparator />}
 
       <ToolbarGroup>
-        <button type="submit" className="flex items-center">
-          <RiSendPlaneLine className="tiptap-button-icon" width={20} hanging={20} />
-          <span className="tiptap-button-text">提交</span>
-        </button>
+        <Button type="submit" tooltip={submitLabel} aria-label={submitLabel}>
+          <RiSendPlaneLine className="tiptap-button-icon" />
+          <span className="tiptap-button-text">{submitLabel}</span>
+        </Button>
       </ToolbarGroup>
     </>
   );
@@ -201,117 +207,127 @@ export interface SimpleEditorRef {
   focus: () => void;
 }
 
-export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
-  const isMobile = useIsBreakpoint();
-  const { height } = useWindowSize();
-  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
-    "main",
-  );
-  const toolbarRef = useRef<HTMLDivElement>(null);
+interface SimpleEditorProps {
+  initialContent?: JSONContent | string;
+  submitLabel?: string;
+}
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-        class: "simple-editor",
+export const SimpleEditor = forwardRef<SimpleEditorRef, SimpleEditorProps>(
+  ({ initialContent = content, submitLabel = "发布" }, ref) => {
+    const isMobile = useIsBreakpoint();
+    const { height } = useWindowSize();
+    const [mobileView, setMobileView] = useState<
+      "main" | "highlighter" | "link"
+    >("main");
+    const toolbarRef = useRef<HTMLDivElement>(null);
+
+    const editor = useEditor({
+      immediatelyRender: false,
+      editorProps: {
+        attributes: {
+          autocomplete: "off",
+          autocorrect: "off",
+          autocapitalize: "off",
+          "aria-label": "Main content area, start typing to enter text.",
+          class: "simple-editor",
+        },
       },
-    },
-    extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
+      extensions: [
+        StarterKit.configure({
+          horizontalRule: false,
+          listItem: false,
+          link: {
+            openOnClick: false,
+            enableClickSelection: true,
+          },
+        }),
+        HeadingListItem,
+        HorizontalRule,
+        TextAlign.configure({ types: ["heading", "paragraph"] }),
+        TaskList,
+        TaskItem.configure({ nested: true }),
+        Highlight.configure({ multicolor: true }),
+        Image,
+        Typography,
+        Superscript,
+        Subscript,
+        Selection,
+        ImageUploadNode.configure({
+          accept: "image/*",
+          maxSize: MAX_FILE_SIZE,
+          limit: 3,
+          upload: handleImageUpload,
+          onError: (error) => console.error("Upload failed:", error),
+        }),
+      ],
+      content: initialContent,
+    });
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        getJSON: () => editor?.getJSON() ?? null,
+        getHTML: () => editor?.getHTML() ?? "",
+        setContent: (nextContent) => {
+          if (!editor) return;
+          editor.commands.setContent(nextContent);
+        },
+        focus: () => {
+          if (!editor) return;
+          editor.chain().focus().run();
         },
       }),
-      HorizontalRule,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
-    ],
-    content,
-  });
+      [editor],
+    );
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      getJSON: () => editor?.getJSON() ?? null,
-      getHTML: () => editor?.getHTML() ?? "",
-      setContent: (nextContent) => {
-        if (!editor) return;
-        editor.commands.setContent(nextContent);
-      },
-      focus: () => {
-        if (!editor) return;
-        editor.chain().focus().run();
-      },
-    }),
-    [editor],
-  );
+    const rect = useCursorVisibility({
+      editor,
+      overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+    });
 
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  });
+    useEffect(() => {
+      if (!isMobile && mobileView !== "main") {
+        setMobileView("main");
+      }
+    }, [isMobile, mobileView]);
 
-  useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
-      setMobileView("main");
-    }
-  }, [isMobile, mobileView]);
+    return (
+      <div className="simple-editor-wrapper">
+        <EditorContext.Provider value={{ editor }}>
+          <Toolbar
+            ref={toolbarRef}
+            style={{
+              ...(isMobile
+                ? {
+                    bottom: `calc(100% - ${height - rect.y - 64}px)`,
+                  }
+                : {}),
+            }}
+          >
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                isMobile={isMobile}
+                submitLabel={submitLabel}
+              />
+            ) : (
+              <MobileToolbarContent
+                type={mobileView === "highlighter" ? "highlighter" : "link"}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+          </Toolbar>
 
-  return (
-    <div className="simple-editor-wrapper">
-      <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
-                  bottom: `calc(100% - ${height - rect.y - 64}px)`,
-                }
-              : {}),
-          }}
-        >
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
-
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
-      </EditorContext.Provider>
-    </div>
-  );
-});
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content"
+          />
+        </EditorContext.Provider>
+      </div>
+    );
+  },
+);
 
 SimpleEditor.displayName = "SimpleEditor";
