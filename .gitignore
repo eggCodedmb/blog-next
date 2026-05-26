@@ -48,3 +48,7 @@ next-env.d.ts
 
 # Authentication tokens
 .npmrc
+
+
+dev-server.err.log
+dev-server.out.log
