@@ -44,6 +44,7 @@ export default function PostCard({ post }: { post: PostItemProps }) {
               src={post.cover}
               alt={post.title}
               fill
+              unoptimized
               sizes="(max-width: 640px) 100vw, 220px"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
