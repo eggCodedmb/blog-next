@@ -3,7 +3,7 @@ import { userById } from "@/lib/user/user.action";
 import { getPostByAuthorId } from "@/lib/post/post.action";
 import PostList from "@/components/post/PostList";
 
-async function ProfilePage({ params }: { params: { id: string } }) {
+async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await userById(Number(id));
   const posts = await getPostByAuthorId(Number(id), {

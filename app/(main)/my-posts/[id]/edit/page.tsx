@@ -10,16 +10,16 @@ import { redirect } from "next/navigation";
 export default async function EditMyPostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const user = await getUser();
-  const postId = await params;
+  const { id: postId } = await params;
 
   if (!user) {
     redirect("/login");
   }
 
-  const id = Number(postId.id);
+  const id = Number(postId);
 
   if (!id) {
     return (
