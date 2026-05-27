@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import MiniSearch from "minisearch";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 type SearchDoc = {
   id: number;
   title: string;

@@ -3,16 +3,18 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 
 const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not set");
-}
-
-const adapter = new PrismaPg({ connectionString });
 
 type PrismaGlobal = typeof globalThis & { prisma?: PrismaClient };
 const prismaGlobal = globalThis as PrismaGlobal;
 
-const prisma = prismaGlobal.prisma ?? new PrismaClient({ adapter });
+let prisma: PrismaClient;
+
+const adapter = new PrismaPg({ connectionString });
+if (connectionString) {
+  prisma = prismaGlobal.prisma ?? new PrismaClient({ adapter });
+} else {
+  prisma = (prismaGlobal.prisma ?? new PrismaClient({adapter})) as PrismaClient;
+}
 
 if (process.env.NODE_ENV !== "production") {
   prismaGlobal.prisma = prisma;
