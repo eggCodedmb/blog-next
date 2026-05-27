@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { createComment, deleteComment } from "@/lib/comment/comment.action";
 import { toggleFavorite } from "@/lib/favorite/favorite.action";
+import * as Avatar from "@radix-ui/react-avatar";
+import { Heart, MessageCircle, Trash2 } from "lucide-react";
 
 export interface CommentItem {
   id: number;
@@ -14,6 +16,25 @@ export interface CommentItem {
     email: string;
     avatar: string | null;
   };
+}
+
+function getRelativeTime(date: Date | string) {
+  const now = Date.now();
+  const then = new Date(date).getTime();
+  const diff = now - then;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 1) return "刚刚";
+  if (minutes < 60) return `${minutes} 分钟前`;
+  if (hours < 24) return `${hours} 小时前`;
+  if (days < 30) return `${days} 天前`;
+  return new Date(date).toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export default function CommentSection({
@@ -79,24 +100,31 @@ export default function CommentSection({
   };
 
   return (
-    <section className="mt-10 space-y-6">
+    <section className="mt-10 space-y-8">
+      {/* Section header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-6 text-sm text-muted">
-          <span>评论 {commentCount}</span>
-          <span>收藏 {favoriteCount}</span>
-        </div>
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-theme">
+          <MessageCircle className="size-5 text-primary" />
+          评论 ({commentCount})
+        </h2>
         <button
           onClick={onToggleFavorite}
-          className={`btn ${favorited ? "btn-primary" : "btn-outline"} hover:opacity-90`}
           disabled={isPending}
+          className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+            favorited
+              ? "bg-primary/10 text-primary"
+              : "border border-theme text-muted hover:border-primary/30 hover:text-primary"
+          }`}
         >
-          {favorited ? "已收藏" : "收藏"}
+          <Heart className={`size-4 ${favorited ? "fill-primary" : ""}`} />
+          {favorited ? "已收藏" : "收藏"} {favoriteCount}
         </button>
       </div>
 
-      <div className="bg-card border border-theme rounded-xl p-4 space-y-3">
+      {/* Comment form */}
+      <div className="space-y-3">
         <textarea
-          className="w-full min-h-24 rounded-lg border border-theme bg-transparent p-3 text-theme placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark:focus:ring-blue-500/20"
+          className="w-full min-h-[100px] rounded-xl border border-theme bg-transparent p-4 text-sm leading-relaxed text-theme placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-colors resize-none"
           placeholder={currentUserId ? "写下你的评论..." : "登录后才能评论"}
           value={content}
           onChange={(event) => setContent(event.target.value)}
@@ -104,44 +132,66 @@ export default function CommentSection({
         />
         <div className="flex justify-end">
           <button
-            className="btn btn-primary hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             onClick={onSubmit}
-            disabled={!currentUserId || isPending}
+            disabled={!currentUserId || isPending || !content.trim()}
           >
+            <MessageCircle className="size-4" />
             发布评论
           </button>
         </div>
       </div>
 
-      <div className="space-y-4">
+      {/* Comment list */}
+      <div className="space-y-1">
         {comments.length === 0 ? (
-          <div className="text-sm text-muted">暂无评论</div>
+          <div className="py-12 text-center text-sm text-muted">
+            <MessageCircle className="mx-auto mb-3 size-8 opacity-30" />
+            <p>暂无评论，来发表第一条评论吧</p>
+          </div>
         ) : (
           comments.map((comment) => (
             <div
               key={comment.id}
-              className="bg-card border border-theme rounded-xl p-4"
+              className="group/comment flex gap-3 rounded-xl p-4 transition-colors hover:bg-card-2"
             >
-              <div className="flex items-center justify-between text-sm text-muted">
+              <Avatar.Root className="size-9 shrink-0 overflow-hidden rounded-full bg-muted/20">
+                <Avatar.Image
+                  className="size-full rounded-[inherit] object-cover"
+                  src={comment.author?.avatar || ""}
+                  alt={comment.author?.name || ""}
+                />
+                <Avatar.Fallback className="flex size-full items-center justify-center rounded-[inherit] text-xs text-muted">
+                  {(comment.author?.name || comment.author?.email || "?")
+                    .slice(0, 1)
+                    .toUpperCase()}
+                </Avatar.Fallback>
+              </Avatar.Root>
+
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-theme font-medium">
+                  <span className="text-sm font-medium text-theme">
                     {comment.author.name || comment.author.email}
                   </span>
-                  <span>{new Date(comment.createdAt).toLocaleString()}</span>
+                  <span className="text-xs text-muted">
+                    {getRelativeTime(comment.createdAt)}
+                  </span>
                 </div>
-                {currentUserId === comment.author.id && (
-                  <button
-                    onClick={() => onDelete(comment.id)}
-                    className="btn btn-ghost text-muted hover:text-theme"
-                    disabled={isPending}
-                  >
-                    删除
-                  </button>
-                )}
+                <p className="mt-1.5 text-sm leading-relaxed text-theme whitespace-pre-wrap">
+                  {comment.content}
+                </p>
               </div>
-              <p className="mt-2 text-theme whitespace-pre-wrap">
-                {comment.content}
-              </p>
+
+              {currentUserId === comment.author.id && (
+                <button
+                  onClick={() => onDelete(comment.id)}
+                  disabled={isPending}
+                  className="shrink-0 self-start rounded-lg p-1.5 text-muted opacity-0 transition-all hover:bg-red-500/10 hover:text-red-500 group-hover/comment:opacity-100"
+                  title="删除评论"
+                >
+                  <Trash2 className="size-4" />
+                </button>
+              )}
             </div>
           ))
         )}

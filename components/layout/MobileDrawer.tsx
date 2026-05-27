@@ -11,7 +11,6 @@ import {
   Info,
   FileText,
   ShieldCheck,
-  HandHelping,
 } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 import SearchBox from "@/components/search/SearchBox";
@@ -19,8 +18,6 @@ import SearchBox from "@/components/search/SearchBox";
 const ICONS: Record<string, React.ElementType> = {
   "/": Home,
   "/profile": User,
-  "/my-posts": FileText,
-  "/assist": HandHelping,
   "/about": Info,
   "/review": ShieldCheck,
 };

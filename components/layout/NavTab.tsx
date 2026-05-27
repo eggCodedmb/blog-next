@@ -6,9 +6,8 @@ import {
   Home,
   User,
   Info,
-  FileText,
   ShieldCheck,
-  HandHelping,
+  FileText,
 } from "lucide-react";
 // import Image from "next/image";
 function NavTab({ isAdmin }: { isAdmin: boolean }) {
@@ -27,8 +26,6 @@ function NavTab({ isAdmin }: { isAdmin: boolean }) {
   const iconMap: Record<string, React.ElementType> = {
     "/": Home,
     "/profile": User,
-    "/my-posts": FileText,
-    "/assist": HandHelping,
     "/about": Info,
     "/review": ShieldCheck,
   };

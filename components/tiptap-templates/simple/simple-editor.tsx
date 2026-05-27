@@ -82,8 +82,6 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/components/tiptap-templates/simple/data/content.json";
-
 const HeadingListItem = ListItem.extend({
   content: "(paragraph | heading) block*",
 });
@@ -96,9 +94,10 @@ const MainToolbarContent = ({
   submitLabel,
 }: {
   onHighlighterClick: () => void;
-  onImageClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onImageClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onLinkClick: () => void;
   isMobile: boolean;
+  submitLabel?: string;
 }) => {
   return (
     <>
@@ -156,7 +155,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton onClick={onImageClick} disabled={isImageUploading} />
+        <ImageUploadButton onClick={onImageClick} />
       </ToolbarGroup>
 
       <Spacer />
@@ -209,7 +208,13 @@ export interface SimpleEditorRef {
   focus: () => void;
 }
 
-export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
+export interface SimpleEditorProps {
+  initialContent?: string;
+  submitLabel?: string;
+}
+
+export const SimpleEditor = forwardRef<SimpleEditorRef, SimpleEditorProps>(
+  ({ initialContent, submitLabel }, ref) => {
   const isMobile = useIsBreakpoint();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -305,6 +310,7 @@ export const SimpleEditor = forwardRef<SimpleEditorRef>((_, ref) => {
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
               isMobile={isMobile}
+              submitLabel={submitLabel}
             />
           ) : (
             <MobileToolbarContent

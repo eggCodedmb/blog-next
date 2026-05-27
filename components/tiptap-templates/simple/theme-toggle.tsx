@@ -9,21 +9,21 @@ import { SunIcon } from "@/components/tiptap-icons/sun-icon";
 import { useEffect, useState } from "react";
 import { save, load } from "@/lib/utils";
 export function ThemeToggle() {
-  const val: boolean = load("isDark") || false;
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(val);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
+    const saved = load("isDark");
+    if (typeof saved === "boolean") {
+      setIsDarkMode(saved);
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDarkMode(prefersDark);
+    }
+
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => setIsDarkMode(mediaQuery.matches);
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    const initialDarkMode =
-      !!document.querySelector('meta[name="color-scheme"][content="dark"]') ||
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setIsDarkMode(initialDarkMode);
   }, []);
 
   useEffect(() => {

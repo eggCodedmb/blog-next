@@ -59,37 +59,34 @@ function ArticleContentPreview({
   const previewHtml =
     effectiveMode === "markdown" ? markdownHtml : (html?.trim() ?? "");
 
-  const containerClassName = [
-    "w-full rounded-2xl border border-theme bg-card p-4 sm:p-6 card-glow",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const containerClassName = ["w-full", className].filter(Boolean).join(" ");
 
   return (
     <section className={containerClassName}>
-      <div className="mb-4 flex flex-wrap items-center gap-2" hidden={hideBtn}>
-        <button
-          type="button"
-          className={`btn ${
-            effectiveMode === "html" ? "btn-primary" : "btn-outline"
-          }`}
-          onClick={() => setMode("html")}
-          disabled={!hasHtml}
-        >
-          HTML 预览
-        </button>
-        <button
-          type="button"
-          className={`btn ${
-            effectiveMode === "markdown" ? "btn-primary" : "btn-outline"
-          }`}
-          onClick={() => setMode("markdown")}
-          disabled={!hasMarkdown}
-        >
-          Markdown 预览
-        </button>
-      </div>
+      {!hideBtn && (
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            className={`btn ${
+              effectiveMode === "html" ? "btn-primary" : "btn-outline"
+            }`}
+            onClick={() => setMode("html")}
+            disabled={!hasHtml}
+          >
+            HTML 预览
+          </button>
+          <button
+            type="button"
+            className={`btn ${
+              effectiveMode === "markdown" ? "btn-primary" : "btn-outline"
+            }`}
+            onClick={() => setMode("markdown")}
+            disabled={!hasMarkdown}
+          >
+            Markdown 预览
+          </button>
+        </div>
+      )}
 
       {previewHtml ? (
         <article

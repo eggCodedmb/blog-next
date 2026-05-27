@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import PostCard from "./PostCard";
 import { PostItemProps } from "@/types/post";
 
 export default function PostInfiniteList({
   initialPosts,
   pageSize,
-  rootRef,
 }: {
   initialPosts: PostItemProps[];
   pageSize: number;
-  rootRef?: RefObject<HTMLElement | null>;
 }) {
   const [posts, setPosts] = useState<PostItemProps[]>(initialPosts);
   const [page, setPage] = useState(1);
@@ -50,31 +48,38 @@ export default function PostInfiniteList({
           });
       },
       {
-        root: rootRef?.current || null,
-        rootMargin: "200px 0px",
+        rootMargin: "400px 0px",
       },
     );
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasMore, isLoading, page, pageSize, rootRef]);
+  }, [hasMore, isLoading, page, pageSize]);
 
   if (!posts.length) {
-    return <div className="w-full max-w-4xl text-center py-20 text-muted">暂无文章 ✍️</div>;
+    return (
+      <div className="py-20 text-center text-muted">
+        <p className="text-4xl">✍️</p>
+        <p className="mt-3 text-sm">暂无文章</p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {posts.map((post) => (
         <PostCard key={`${post.id}-${post.createdAt}`} post={post} />
       ))}
       <div ref={sentinelRef} />
       {isLoading && (
-        <div className="text-center text-sm text-muted py-4">加载中...</div>
+        <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted">
+          <span className="size-4 animate-spin rounded-full border-2 border-muted/30 border-t-primary" />
+          加载中...
+        </div>
       )}
       {!hasMore && (
-        <div className="text-center text-sm text-muted py-4">
-          已加载全部
+        <div className="py-6 text-center text-sm text-muted">
+          — 已加载全部 —
         </div>
       )}
     </div>

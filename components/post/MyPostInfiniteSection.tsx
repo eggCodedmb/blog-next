@@ -10,11 +10,9 @@ type MyPost = PostItemProps & { published?: string };
 export default function MyPostInfiniteSection({
   initialPosts,
   pageSize,
-  onDelete,
 }: {
   initialPosts: MyPost[];
   pageSize: number;
-  onDelete: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
 }) {
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +24,6 @@ export default function MyPostInfiniteSection({
           initialPosts={initialPosts}
           pageSize={pageSize}
           rootRef={viewportRef}
-          onDelete={onDelete}
         />
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar orientation="vertical" className="hidden sm:block w-2">

@@ -25,8 +25,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "1123",
+  title: "DMB Blog",
+  description: "DMB 博客 — 技术与生活",
 };
 
 export default function RootLayout({
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body
         className={`${manrope.variable} ${newsreader.variable} ${jetbrainsMono.variable} min-h-screen font-sans antialiased`}
       >

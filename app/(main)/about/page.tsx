@@ -1,196 +1,250 @@
 import Link from "next/link";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { getUser } from "@/lib/user/user.action";
 import {
   Sparkles,
-  Telescope,
   ShieldCheck,
-  Users,
-  Feather,
   Rocket,
+  Feather,
+  ArrowRight,
+  Github,
+  Mail,
+  BookOpen,
+  Users,
+  Zap,
+  Heart,
 } from "lucide-react";
 import { use } from "react";
 
-const VALUES = [
+const FEATURES = [
   {
-    title: "内容优先",
-    description: "用结构化与精炼表达，让好内容被更快发现。",
     icon: Feather,
+    title: "极简写作",
+    desc: "富文本编辑器，专注于表达本身，而非工具复杂度。",
   },
   {
-    title: "可信社区",
-    description: "轻量审核与规则并存，减少噪音，保护创作。",
     icon: ShieldCheck,
+    title: "可信社区",
+    desc: "轻量审核机制过滤噪音，保护每一次认真创作。",
   },
   {
-    title: "持续进化",
-    description: "从阅读体验到创作工具，保持每次迭代的边际提升。",
-    icon: Rocket,
+    icon: Zap,
+    title: "即时搜索",
+    desc: "客户端全文检索，毫秒级响应，让好内容不再沉没。",
+  },
+  {
+    icon: Heart,
+    title: "收藏与关注",
+    desc: "沉淀你喜欢的作者与文章，构建专属知识库。",
   },
 ];
 
-const MILESTONES = [
-  {
-    year: "2024",
-    title: "起步",
-    detail: "建立最小写作与发布流程，验证阅读体验。",
-  },
-  {
-    year: "2025",
-    title: "扩展",
-    detail: "推出社区互动、审核体系与主题定制。",
-  },
-  {
-    year: "2026",
-    title: "聚合",
-    detail: "让内容沉淀为知识图谱，强化搜索与发现。",
-  },
+const TIMELINE = [
+  { year: "2024", label: "种子", text: "最小写作流程上线，验证阅读与创作体验。" },
+  { year: "2025", label: "生长", text: "社区互动、审核体系、主题定制逐一落地。" },
+  { year: "2026", label: "聚合", text: "知识图谱与智能搜索，让内容发现更自然。" },
+];
+
+const STATS = [
+  { value: "1,200+", label: "活跃作者", icon: Users },
+  { value: "18,000+", label: "沉淀文章", icon: BookOpen },
+  { value: "3.7×", label: "阅读深度", icon: Rocket },
 ];
 
 function About() {
   const user = use(getUser());
-  let linkCop = null;
-  if (user) {
-    linkCop = (
-      <div className="flex flex-wrap items-center gap-3">
-        <Link href="/create-post" className="btn btn-primary">
-          开始创作
-        </Link>
-        <Link href="/my-posts" className="btn btn-outline text-muted">
-          查看我的帖子
-        </Link>
-      </div>
-    );
-  }
+
   return (
-    <div className="w-full h-[calc(100vh-64px)] px-4 py-6">
-      <ScrollArea.Root className="h-full w-full overflow-hidden">
-        <ScrollArea.Viewport className="h-full w-full pr-1">
-          <div className="w-full max-w-5xl mx-auto pb-10">
-            <section className="relative overflow-hidden rounded-3xl border border-theme bg-card p-6 sm:p-10 card-glow">
-              <div className="absolute inset-0">
-                <div className="absolute -top-24 right-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--primary)_28%,transparent),transparent_60%)]" />
-                <div className="absolute -bottom-24 left-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--bg-2)_80%,transparent),transparent_60%)]" />
-              </div>
-              <div className="relative space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-theme bg-[color-mix(in_srgb,var(--card)_92%,transparent)] px-3 py-1 text-xs text-muted">
-                  <Sparkles size={14} />
-                  关于我们
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-semibold text-theme font-display leading-tight">
-                  为深度阅读与高质量创作，
-                  <br />
-                  打造稳定、清晰、有温度的博客空间。
-                </h1>
-                <p className="text-sm sm:text-base text-muted max-w-2xl">
-                  我们相信内容的价值来自长期积累。这里既有简洁的写作工具，也有克制的社区机制，帮你沉淀观点、连接同好、持续输出。
-                </p>
-                {user && linkCop}
-              </div>
-            </section>
-
-            <section className="mt-8 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-theme bg-card p-5 card-glow">
-                <p className="text-xs text-muted">活跃作者</p>
-                <p className="mt-2 text-2xl font-semibold text-theme">1,200+</p>
-                <p className="mt-1 text-xs text-muted">持续写作的创作者</p>
-              </div>
-              <div className="rounded-2xl border border-theme bg-card p-5 card-glow">
-                <p className="text-xs text-muted">内容沉淀</p>
-                <p className="mt-2 text-2xl font-semibold text-theme">
-                  18,000+
-                </p>
-                <p className="mt-1 text-xs text-muted">被收藏与引用的文章</p>
-              </div>
-              <div className="rounded-2xl border border-theme bg-card p-5 card-glow">
-                <p className="text-xs text-muted">阅读时长</p>
-                <p className="mt-2 text-2xl font-semibold text-theme">3.7x</p>
-                <p className="mt-1 text-xs text-muted">对比常规内容平台</p>
-              </div>
-            </section>
-
-            <section className="mt-10">
-              <div className="flex items-center gap-2 text-sm text-muted">
-                <Telescope size={16} />
-                我们在做什么
-              </div>
-              <div className="mt-4 grid gap-4 md:grid-cols-3">
-                {VALUES.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.title}
-                      className="rounded-2xl border border-theme bg-card p-6 card-glow"
-                    >
-                      <div className="flex items-center gap-2 text-sm text-muted">
-                        <span className="inline-flex size-9 items-center justify-center rounded-full border border-theme bg-[color-mix(in_srgb,var(--card)_85%,transparent)]">
-                          <Icon size={18} />
-                        </span>
-                        {item.title}
-                      </div>
-                      <p className="mt-3 text-sm text-theme/85">
-                        {item.description}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-
-            <section className="mt-10 rounded-2xl border border-theme bg-card p-6 sm:p-8 card-glow">
-              <div className="flex items-center gap-2 text-sm text-muted">
-                <Users size={16} />
-                我们的轨迹
-              </div>
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                {MILESTONES.map((item) => (
-                  <div
-                    key={item.year}
-                    className="rounded-xl border border-theme bg-[color-mix(in_srgb,var(--card)_92%,transparent)] p-4"
-                  >
-                    <p className="text-xs text-muted">{item.year}</p>
-                    <p className="mt-2 text-lg font-semibold text-theme">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm text-muted">{item.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="mt-10 grid gap-4 md:grid-cols-[1.2fr_1fr]">
-              <div className="rounded-2xl border border-theme bg-card p-6 sm:p-8 card-glow">
-                <p className="text-xs text-muted">我们坚持的体验标准</p>
-                <h2 className="mt-2 text-2xl font-semibold text-theme font-display">
-                  让阅读回归内容，让写作更轻松。
-                </h2>
-                <p className="mt-3 text-sm text-muted">
-                  无需复杂的界面堆叠，让功能在需要的时候出现。我们优先保证排版可读性、搜索效率与审核透明度，让每一次创作都更有回应。
-                </p>
-              </div>
-              <div className="rounded-2xl border border-theme bg-card p-6 sm:p-8 card-glow">
-                <p className="text-xs text-muted">下一步</p>
-                <h3 className="mt-2 text-xl font-semibold text-theme font-display">
-                  更聚焦的内容发现
-                </h3>
-                <p className="mt-3 text-sm text-muted">
-                  计划引入专题、收藏夹协作与写作摘要，让好内容被更快索引、复用与传播。
-                </p>
-                <div className="mt-4 flex items-center gap-2 text-sm text-muted">
-                  <ShieldCheck size={16} />
-                  每一次更新都以稳定为前提
-                </div>
-              </div>
-            </section>
+    <div className="min-h-[calc(100vh-64px)] pb-20">
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-[radial-gradient(ellipse,color-mix(in_srgb,var(--primary)_15%,transparent),transparent_70%)]" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-theme bg-card/60 backdrop-blur-sm px-4 py-1.5 text-xs text-muted mb-8">
+            <Sparkles size={14} className="text-primary" />
+            关于 DMB
           </div>
-        </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar
-          orientation="vertical"
-          className="hidden sm:block w-2"
-        >
-          <ScrollArea.Thumb className="bg-slate-400/60 dark:bg-slate-500/60 rounded-full" />
-        </ScrollArea.Scrollbar>
-      </ScrollArea.Root>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-theme font-display leading-[1.15] tracking-tight">
+            为深度阅读而生的
+            <br />
+            <span className="text-primary">博客创作空间</span>
+          </h1>
+          <p className="mt-6 text-base sm:text-lg text-muted max-w-xl mx-auto leading-relaxed">
+            这里没有算法推荐的噪音，只有结构化的内容与克制的社区。我们相信好内容值得被认真对待。
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            {user ? (
+              <>
+                <Link
+                  href="/create-post"
+                  className="btn btn-primary gap-2 rounded-full px-6"
+                >
+                  开始创作 <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/my-posts"
+                  className="btn btn-outline rounded-full px-6"
+                >
+                  我的文章
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/home"
+                  className="btn btn-primary gap-2 rounded-full px-6"
+                >
+                  浏览文章 <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/login"
+                  className="btn btn-outline rounded-full px-6"
+                >
+                  加入我们
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="max-w-4xl mx-auto px-6 -mt-2">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6">
+          {STATS.map((s) => {
+            const Icon = s.icon;
+            return (
+              <div
+                key={s.label}
+                className="group rounded-2xl border border-theme bg-card/80 backdrop-blur-sm p-5 sm:p-6 text-center transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_24px_-8px_var(--glow)]"
+              >
+                <Icon
+                  size={20}
+                  className="mx-auto text-muted group-hover:text-primary transition-colors duration-300"
+                />
+                <p className="mt-3 text-2xl sm:text-3xl font-bold text-theme font-display tracking-tight">
+                  {s.value}
+                </p>
+                <p className="mt-1 text-xs text-muted">{s.label}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="max-w-4xl mx-auto px-6 mt-20">
+        <div className="text-center mb-12">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium">
+            核心能力
+          </p>
+          <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-theme font-display">
+            为创作者设计的功能
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-5">
+          {FEATURES.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <div
+                key={f.title}
+                className="group relative rounded-2xl border border-theme bg-card p-6 sm:p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_30px_-10px_var(--glow)]"
+              >
+                <div className="flex items-start gap-4">
+                  <span className="shrink-0 inline-flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary/15">
+                    <Icon size={20} />
+                  </span>
+                  <div>
+                    <h3 className="font-semibold text-theme text-base">
+                      {f.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted leading-relaxed">
+                      {f.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="max-w-4xl mx-auto px-6 mt-20">
+        <div className="text-center mb-12">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium">
+            发展轨迹
+          </p>
+          <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-theme font-display">
+            每一步都在变好
+          </h2>
+        </div>
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-[27px] top-3 bottom-3 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent hidden sm:block" />
+          <div className="space-y-6">
+            {TIMELINE.map((t, i) => (
+              <div key={t.year} className="flex gap-5 sm:gap-8 items-start">
+                <div className="shrink-0 flex flex-col items-center">
+                  <div className="size-14 rounded-2xl border border-theme bg-card flex items-center justify-center text-sm font-bold text-primary font-display">
+                    {t.year}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-theme bg-card p-5 sm:p-6 flex-1 transition-all duration-300 hover:border-primary/20">
+                  <p className="text-base font-semibold text-theme">{t.label}</p>
+                  <p className="mt-1.5 text-sm text-muted leading-relaxed">
+                    {t.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy */}
+      <section className="max-w-4xl mx-auto px-6 mt-20">
+        <div className="relative overflow-hidden rounded-3xl border border-theme bg-card p-8 sm:p-12">
+          <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--primary)_10%,transparent),transparent_70%)]" />
+          <div className="relative">
+            <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium">
+              设计哲学
+            </p>
+            <h2 className="mt-4 text-2xl sm:text-3xl font-bold text-theme font-display leading-snug max-w-lg">
+              让阅读回归内容，
+              <br />
+              让写作回归表达。
+            </h2>
+            <p className="mt-4 text-sm sm:text-base text-muted max-w-lg leading-relaxed">
+              无需复杂的界面堆叠，让功能在需要的时候出现。我们优先保证排版可读性、搜索效率与审核透明度，让每一次创作都更有价值。
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/home"
+                className="btn btn-primary gap-2 rounded-full px-5 text-sm"
+              >
+                开始阅读 <ArrowRight size={14} />
+              </Link>
+              <a
+                href="https://github.com/eggCodedmb/blog-next"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline gap-2 rounded-full px-5 text-sm"
+              >
+                <Github size={14} /> 源码
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact footer */}
+      <section className="max-w-4xl mx-auto px-6 mt-16 text-center">
+        <p className="text-sm text-muted">
+          有想法或建议？欢迎通过 GitHub Issues 与我们交流。
+        </p>
+      </section>
     </div>
   );
 }

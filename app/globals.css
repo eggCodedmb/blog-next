@@ -68,6 +68,9 @@ body {
   .bg-surface {
     background: var(--card);
   }
+  .bg-card-2 {
+    background: var(--card-2);
+  }
   .text-theme {
     color: var(--text);
   }

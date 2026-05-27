@@ -1,16 +1,19 @@
+import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as Label from "@radix-ui/react-label";
+import { Pencil } from "lucide-react";
 
 function UserCard({
   name,
   email,
   avatar,
-  postCount,
+  editHref,
 }: {
   name: string;
   email: string;
   avatar?: string;
   postCount?: number;
+  editHref?: string;
 }) {
   return (
     <div className="w-full rounded-2xl border border-theme bg-card shadow-sm overflow-hidden">
@@ -35,13 +38,16 @@ function UserCard({
             </div>
           </div>
 
-          <div className="flex items-center gap-6 text-sm text-muted">
-            <div className="flex flex-col items-start">
-              <span className="text-theme font-semibold">
-                {postCount ?? 0}
-              </span>
-              <span>文章</span>
-            </div>
+          <div className="flex items-center gap-4 text-sm text-muted">
+            {editHref && (
+              <Link
+                href={editHref}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-theme px-3 py-1.5 text-xs font-medium text-theme transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                <Pencil className="size-3.5" />
+                编辑资料
+              </Link>
+            )}
           </div>
         </div>
       </div>

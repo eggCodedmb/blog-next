@@ -1,5 +1,5 @@
 import Content from "@/components/post/centent";
-import { getPostDetail } from "@/lib/post/post.action";
+import { getPostDetail, incrementPostViewCount } from "@/lib/post/post.action";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/user/user.action";
 
@@ -25,7 +25,10 @@ export default async function ContentPage({ params }: ContentPageProps) {
     notFound(); // 文章不存在返回404
   }
 
-  // 5. 将解析后的数据传递给子组件
+  // 5. 增加浏览数（不阻塞渲染）
+  incrementPostViewCount(post.id);
+
+  // 6. 将解析后的数据传递给子组件
   return (
     <Content
       post={post}

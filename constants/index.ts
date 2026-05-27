@@ -6,18 +6,8 @@ export const NAV_LINKS = [
   },
   {
     href: "/profile",
-    label: "个人",
+    label: "我的创作",
     icon: "/assets/user.svg",
-  },
-  {
-    href: "/my-posts",
-    label: "我的帖子",
-    icon: "/assets/user.svg",
-  },
-  {
-    href: "/assist",
-    label: "助力",
-    icon: "/assets/home.svg",
   },
   {
     href: "/about",

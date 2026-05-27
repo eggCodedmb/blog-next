@@ -32,6 +32,7 @@ model Post {
   cover     String
   content   String?
   published String   @default("0")
+  viewCount Int      @default(0)
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
   comments  Comment[]

@@ -210,3 +210,11 @@ export async function rejectPost(id: number) {
   });
   return res;
 }
+
+// 增加浏览数
+export async function incrementPostViewCount(id: number) {
+  await prisma.post.update({
+    where: { id },
+    data: { viewCount: { increment: 1 } },
+  });
+}

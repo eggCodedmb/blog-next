@@ -11,13 +11,15 @@ function EditProfilePage() {
     );
   }
   return (
-    <UserEdit
-      id={user.id}
-      email={user.email}
-      name={user.name}
-      avatar={user.avatar}
-      isAdmin={user.isAdmin}
-    />
+    <div className="w-full max-w-5xl pt-4">
+      <UserEdit
+        id={user.id}
+        email={user.email}
+        name={user.name}
+        avatar={user.avatar}
+        isAdmin={user.isAdmin}
+      />
+    </div>
   );
 }
 
